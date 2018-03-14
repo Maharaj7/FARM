@@ -87,12 +87,11 @@ public class Client_Customer implements Serializable{
 		try {
 			@SuppressWarnings("unused")
 			Boolean flag = (Boolean)is.readObject();
+		 
 		} catch (ClassNotFoundException | IOException | ClassCastException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	public Customer receiveData()
@@ -109,9 +108,6 @@ public class Client_Customer implements Serializable{
 		}
 		return null;
 	}
-	
-	
-	
 
 	
 	

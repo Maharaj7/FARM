@@ -6,7 +6,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
+import model.Crop;
 import model.Farmer;
 
 public class Client_Farmer implements Serializable{
@@ -81,6 +83,25 @@ public void getStreams() {
 		}
 	}
 	
+	public void sendCrop(Crop crop)
+	{
+		try {
+			os.writeObject(crop);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	  public void sendCropList(ArrayList<Crop> crop)
+	  {
+		  try {
+				os.writeObject(crop);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	  }
 	
 	public void receiveResponse()
 	{
@@ -110,5 +131,31 @@ public void getStreams() {
 		return null;
 	}
 	
+	/*
+	public Crop receiveCropData()
+	{
+		try {
+			Crop cr = (Crop)is.readObject();
+			return cr;
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	*/
+	public ArrayList<Crop> receiveCropData()
+	{
+		try {
+			@SuppressWarnings("unchecked")
+			ArrayList<Crop> cr = (ArrayList<Crop>)is.readObject();
+			return cr;
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }
