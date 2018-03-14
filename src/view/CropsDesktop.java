@@ -231,13 +231,14 @@ public class CropsDesktop {
 							else{
 								try{
 							String selection;
-							if(availableComboBox.getSelectedItem().equals("True"))
+							if(availableComboBox.getSelectedItem().equals("In Stock"))
 							{
-								selection = "true";
+								selection = "In Stock";
+								//made this
 							}
 							else
 							{
-								selection = "false";
+								selection = "Not In Stock";
 							}
 							Client_Farmer fam = new Client_Farmer();
 							 
@@ -376,6 +377,8 @@ public class CropsDesktop {
 					updateCropsinternalFrame.getContentPane().add(scrollPane_1);
 					updateCropsinternalFrame.setVisible(true);
 					flag++;
+					
+					
 
 					updateCropsinternalFrame.addInternalFrameListener(new InternalFrameAdapter(){
 						public void internalFrameClosing(InternalFrameEvent e) {
