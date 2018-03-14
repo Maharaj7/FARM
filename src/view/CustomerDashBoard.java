@@ -14,6 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 
+import java.awt.Font;
+
+//import controller.SqlConnection;
+
+
 public class CustomerDashBoard {
 
 	public JFrame frame;
@@ -25,8 +30,6 @@ public class CustomerDashBoard {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
-					
 					CustomerDashBoard window = new CustomerDashBoard();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -53,10 +56,6 @@ public class CustomerDashBoard {
 		frame.getContentPane().setLayout(null);
 		frame.setTitle("Customer DashBoard");
 		
-		JLabel dasboardLbl = new JLabel("My DashBoard");
-		dasboardLbl.setBounds(303, 35, 125, 16);
-		frame.getContentPane().add(dasboardLbl);
-		
 		JButton addFundsbtn = new JButton("");
 		addFundsbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -71,11 +70,6 @@ public class CustomerDashBoard {
 		frame.getContentPane().add(addFundsbtn);
 		
 		JButton searchCropsBtn = new JButton("");
-		searchCropsBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		searchCropsBtn.setToolTipText("Purchase crops here");
 		
 		searchCropsBtn.addMouseListener(new MouseAdapter() {
@@ -106,20 +100,25 @@ public class CustomerDashBoard {
 		frame.getContentPane().add(myBasketBtn);
 		
 		JLabel lblAddFundsTo = new JLabel("Add Funds to Account");
-		lblAddFundsTo.setBounds(66, 522, 146, 29);
+		lblAddFundsTo.setFont(new Font("Khmer MN", Font.PLAIN, 19));
+		lblAddFundsTo.setBounds(31, 526, 218, 29);
 		frame.getContentPane().add(lblAddFundsTo);
 		
 		JLabel lblSearchCrops = new JLabel("Search Crops");
-		lblSearchCrops.setBounds(333, 528, 125, 16);
+		lblSearchCrops.setFont(new Font("Khmer MN", Font.PLAIN, 19));
+		lblSearchCrops.setBounds(323, 529, 135, 22);
 		frame.getContentPane().add(lblSearchCrops);
 		
 		JLabel lblMyBasket = new JLabel("My Basket");
-		lblMyBasket.setBounds(568, 528, 99, 16);
+		lblMyBasket.setFont(new Font("Khmer MN", Font.PLAIN, 19));
+		lblMyBasket.setBounds(550, 529, 99, 23);
 		frame.getContentPane().add(lblMyBasket);
 		
 		JLabel lblUserDetails = new JLabel("User Details");
+		lblUserDetails.setFont(new Font("Khmer MN", Font.PLAIN, 19));
+		lblUserDetails.setForeground(new Color(255, 255, 255));
 		lblUserDetails.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/userIcon.png")));
-		lblUserDetails.setBounds(51, 93, 125, 29);
+		lblUserDetails.setBounds(51, 93, 161, 29);
 		frame.getContentPane().add(lblUserDetails);
 		
 		JSeparator separator = new JSeparator();
@@ -134,7 +133,9 @@ public class CustomerDashBoard {
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				//go to login screen
+				frame.dispose();
+				LoginScreen window = new LoginScreen();
+				window.frame.setVisible(true);
 			}
 		});
 		label.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/logoutButton.png")));
@@ -144,8 +145,9 @@ public class CustomerDashBoard {
 		JLabel label_1 = new JLabel("");
 		label_1.setBounds(267, 125, 203, 156);
 		frame.getContentPane().add(label_1);
-	
-		LoginScreen ls = new LoginScreen();
+		
+		
+        LoginScreen ls = new LoginScreen();
 		
 		name = ls.getFname();
 		lname = ls.getLname();
@@ -163,5 +165,16 @@ public class CustomerDashBoard {
 		JLabel label_2 = new JLabel(email1);
 		label_2.setBounds(507, 300, 170, 23);
 		frame.getContentPane().add(label_2);
+
+		
+		JLabel label_3 = new JLabel("");
+		label_3.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/bckgrd1.jpg")));
+		label_3.setBounds(20, 21, 692, 554);
+		frame.getContentPane().add(label_3);
+		
+		JLabel label_4 = new JLabel("My DashBoard");
+		label_4.setFont(new Font("Herculanum", Font.BOLD, 22));
+		label_4.setBounds(266, 23, 192, 29);
+		frame.getContentPane().add(label_4);
 	}
 }

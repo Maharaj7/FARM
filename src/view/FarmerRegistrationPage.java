@@ -10,6 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import communication.Client_Farmer;
+import model.Farmer;
+
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
@@ -67,24 +71,14 @@ public class FarmerRegistrationPage {
         JLabel lblFarmerReg = new JLabel("Farmer Registration Page");
         lblFarmerReg.setFont(new Font("Tahoma", Font.PLAIN, 22));
         lblFarmerReg.setIcon(null);
-        lblFarmerReg.setBounds(249, 30, 254, 29);
+        lblFarmerReg.setBounds(157, 24, 254, 29);
         frmFarmersRegistrationPage_1.getContentPane().add(lblFarmerReg);
         
         JLabel lblUploadImageOf = new JLabel("Select Image to Upload:");
         lblUploadImageOf.setBounds(461, 151, 158, 16);
         frmFarmersRegistrationPage_1.getContentPane().add(lblUploadImageOf);
         
-        JButton btnRegister = new JButton("Register Now");
-        btnRegister.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Registration Successfull", "Confirmed Registration", JOptionPane.INFORMATION_MESSAGE);
-                
-                FarmerDashBoard window = new FarmerDashBoard(); //should i carry them bk here or let the log in with the new credentials created?
-                window.frmFarmerDashboard.setVisible(true);
-            }
-        });
-        btnRegister.setBounds(289, 401, 133, 29);
-        frmFarmersRegistrationPage_1.getContentPane().add(btnRegister);
+       
         
         JLabel lblEmailAddress = new JLabel("Email Address:");
         lblEmailAddress.setBounds(25, 91, 105, 16);
@@ -174,9 +168,41 @@ public class FarmerRegistrationPage {
         chooseImgButton.setBounds(461, 179, 154, 23);
         frmFarmersRegistrationPage_1.getContentPane().add(chooseImgButton);
         
+        JButton btnRegister = new JButton("Register Now");
+        btnRegister.addActionListener(new ActionListener() {
+            @SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+            	if( fNameTextField.getText().isEmpty() || lNameTextField.getText().isEmpty() || farmAddressTextField.getText().isEmpty()
+    					|| passwordField.getText().isEmpty() ||confirmPasswordField.getText().isEmpty() || emaiTextField.getText().isEmpty() )
+    				 {
+    					 JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
+    				 }
+    				 else{
+    					
+    						 Client_Farmer cus = new Client_Farmer();
+    						 cus.sendAction("Add Farmer");
+    						
+    						 Farmer farmer = new Farmer(fNameTextField.getText(),lNameTextField.getText(),emaiTextField.getText(),farmAddressTextField.getText(),passwordField.getText(),personImage);
+    						 cus.sendFarmer(farmer);
+    			             cus.receiveResponse();
+    			         
+    					JOptionPane.showMessageDialog(null, "Data Saved!");
+    					fNameTextField.setText(" ");
+    					lNameTextField.setText(" ");
+    					farmAddressTextField.setText(" ");
+    					passwordField.setText("");
+    					emaiTextField.setText("");
+    					confirmPasswordField.setText("");
+    	                 
+    			
+    				 }
+            }
+        });
+        btnRegister.setBounds(289, 401, 133, 29);
+        frmFarmersRegistrationPage_1.getContentPane().add(btnRegister);
         JLabel label = new JLabel("");
-        label.setIcon(new ImageIcon(FarmerRegistrationPage.class.getResource("/resources/farm2.jpg")));
-        label.setBounds(0, 0, 661, 506);
-        frmFarmersRegistrationPage_1.getContentPane().add(label);
+		label.setIcon(new ImageIcon(FarmerRegistrationPage.class.getResource("/resources/farm2.jpg")));
+		label.setBounds(0, 0, 645, 506);
+		frmFarmersRegistrationPage_1.getContentPane().add(label);
     }
 }

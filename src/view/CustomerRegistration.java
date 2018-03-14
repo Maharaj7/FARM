@@ -178,7 +178,7 @@ public class CustomerRegistration {
 			public void actionPerformed(ActionEvent e) {
 			
 				if( textField.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()
-					|| passwordField.getText().isEmpty() ||passwordField_1.getText().isEmpty() )
+					|| passwordField.getText().isEmpty() ||passwordField_1.getText().isEmpty() || personImage == null )
 				 {
 					 JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
 				 }

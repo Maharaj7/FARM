@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -16,10 +15,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import java.awt.Color;
 import java.awt.SystemColor;
-import javax.swing.JSeparator;
-import javax.swing.JSlider;
-import javax.swing.JList;
 import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.JDesktopPane;
+import javax.swing.JMenu;
+import javax.swing.JComboBox;
 
 public class PurchaseCrops_Customers {
 
@@ -55,68 +56,97 @@ public class PurchaseCrops_Customers {
 		frmPurchaseCrops = new JFrame();
 		frmPurchaseCrops.setTitle("Purchase Crops");
 		frmPurchaseCrops.getContentPane().setBackground(SystemColor.window);
-		frmPurchaseCrops.setBounds(100, 100, 639, 546);
+		frmPurchaseCrops.setBounds(100, 100, 735, 555);
 		frmPurchaseCrops.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPurchaseCrops.getContentPane().setLayout(null);
-		
-		JButton viewAllBtn = new JButton("");
-		viewAllBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JInternalFrame allCropsInternalFrame = new JInternalFrame("All Crops");
-				allCropsInternalFrame.setFrameIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewAllCrops_Cus.png")));
-				allCropsInternalFrame.setClosable(true);
-				allCropsInternalFrame.setBounds(20, 342, 260, 147);
-				frmPurchaseCrops.getContentPane().add(allCropsInternalFrame);
-				allCropsInternalFrame.setVisible(true);
-			}
-		});
-		
-		viewAllBtn.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewAllCrops_Cus.png")));
-		viewAllBtn.setBounds(110, 123, 170, 129);
-		frmPurchaseCrops.getContentPane().add(viewAllBtn);
-		
-		JButton filterByFarmersBtn = new JButton("");
-		filterByFarmersBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JInternalFrame FilteredByFarmerInternalFrame = new JInternalFrame("Filtered By Farmer");
-				FilteredByFarmerInternalFrame.setFrameIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewByFarmer.png")));
-				FilteredByFarmerInternalFrame.setClosable(true);
-				FilteredByFarmerInternalFrame.setBounds(347, 342, 260, 147);
-				frmPurchaseCrops.getContentPane().add(FilteredByFarmerInternalFrame);
-				FilteredByFarmerInternalFrame.setVisible(true);
-				
-			}
-		});
-		
-		filterByFarmersBtn.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewByFarmer.png")));
-		filterByFarmersBtn.setBounds(377, 123, 144, 129);
-		frmPurchaseCrops.getContentPane().add(filterByFarmersBtn);
-		
-		JLabel lblViewAllCrops = new JLabel("View All");
-		lblViewAllCrops.setBounds(172, 264, 63, 16);
-		frmPurchaseCrops.getContentPane().add(lblViewAllCrops);
-		
-		JLabel lblFilterByFarmers = new JLabel("Filter By Farmers");
-		lblFilterByFarmers.setBounds(400, 264, 112, 16);
-		frmPurchaseCrops.getContentPane().add(lblFilterByFarmers);
-		
-		JLabel lblAddCrops = new JLabel("Add Crops");
-		lblAddCrops.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/addCrop_sml.png")));
-		lblAddCrops.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		lblAddCrops.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAddCrops.setBounds(265, 40, 134, 27);
-		frmPurchaseCrops.getContentPane().add(lblAddCrops);
-		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(new Color(212, 212, 212));
-		separator.setBounds(82, 318, 500, 12);
-		frmPurchaseCrops.getContentPane().add(separator);
-		
+
+		JDesktopPane desktopPane = new JDesktopPane();
+		desktopPane.setBounds(0, 0, 735, 515);
+		frmPurchaseCrops.getContentPane().add(desktopPane);
+
+		JLabel label = new JLabel("");
+		label.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/farm.jpg")));
+		label.setBounds(0, 98, 735, 332);
+		desktopPane.add(label);
+
+
 		JMenuBar menuBar = new JMenuBar();
 		frmPurchaseCrops.setJMenuBar(menuBar);
-		
+
+		JMenu menu = new JMenu("Add Crops");
+		menu.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/addCrop_sml.png")));
+		menu.setForeground(new Color(255, 127, 80));
+		menu.setFont(new Font("Herculanum", Font.PLAIN, 20));
+		JMenuItem viewItem = new JMenuItem("View All");
+		viewItem.addMouseListener(new MouseAdapter() {
+			int flag = 0;
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if(flag == 0) 
+				{
+					JInternalFrame viewAllCropsInternalFrame = new JInternalFrame("View All Crops",true,true,true,true);
+					viewAllCropsInternalFrame.setFrameIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewAllCrops_Cus.png")));
+					viewAllCropsInternalFrame.setBounds(37, 79, 311, 404);
+					desktopPane.add(viewAllCropsInternalFrame);
+					viewAllCropsInternalFrame.getContentPane().setLayout(null);
+
+					JLabel lblListOfAll = new JLabel("List of All Crops");
+					lblListOfAll.setBounds(93, 20, 108, 16);
+					viewAllCropsInternalFrame.getContentPane().add(lblListOfAll);
+					viewAllCropsInternalFrame.setVisible(true);
+					flag++;
+
+					viewAllCropsInternalFrame.addInternalFrameListener(new InternalFrameAdapter(){
+						public void internalFrameClosing(InternalFrameEvent e) {
+							flag = 0; 
+						}
+					});
+				}
+			}
+		});
+		viewItem.setFont(new Font("Khmer MN", Font.PLAIN, 18));
+		viewItem.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewAllCrops_Cus.png")));
+		menu.add(viewItem);
+
+		JMenuItem byFarmerItem = new JMenuItem("Filter By Farmer");
+		byFarmerItem.addMouseListener(new MouseAdapter() {
+			int flag = 0;
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if(flag == 0) // the 
+				{
+					JInternalFrame filterByFarmerinternalFrame = new JInternalFrame("Filter By Farmer",true,true,true,true);
+					filterByFarmerinternalFrame.setFrameIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewByFarmer.png")));
+					filterByFarmerinternalFrame.setBounds(398, 79, 298, 404);
+					desktopPane.add(filterByFarmerinternalFrame);
+					filterByFarmerinternalFrame.getContentPane().setLayout(null);
+
+					JLabel lblEnterFarmer = new JLabel("Select farmer:");
+					lblEnterFarmer.setBounds(16, 27, 94, 16);
+					filterByFarmerinternalFrame.getContentPane().add(lblEnterFarmer);
+
+					JComboBox<String> comboBox = new JComboBox<String>();
+					comboBox.addItem("John Brown"); // this drop down will be populated from DB
+					comboBox.setBounds(108, 23, 136, 27);
+					filterByFarmerinternalFrame.getContentPane().add(comboBox);
+					filterByFarmerinternalFrame.setVisible(true);
+					flag++;
+
+					filterByFarmerinternalFrame.addInternalFrameListener(new InternalFrameAdapter(){
+						public void internalFrameClosing(InternalFrameEvent e) {
+							flag = 0; 
+						}
+					});
+				}
+			}
+		});
+
+		byFarmerItem.setFont(new Font("Khmer MN", Font.PLAIN, 17));
+		byFarmerItem.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/viewByFarmer.png")));
+		menu.add(byFarmerItem);
+		menuBar.add(menu);
+
+
 		JButton bckToDashboardBtn = new JButton("My DashBoard");
 		bckToDashboardBtn.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		menuBar.add(bckToDashboardBtn);
@@ -129,7 +159,7 @@ public class PurchaseCrops_Customers {
 			}
 		});
 		bckToDashboardBtn.setIcon(new ImageIcon(PurchaseCrops_Customers.class.getResource("/resources/backIcon.png")));
-		
+
 		JButton myBasketBtn = new JButton("My Basket");
 		myBasketBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -144,7 +174,6 @@ public class PurchaseCrops_Customers {
 		menuBar.add(myBasketBtn);
 		bckToDashboardBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 			}
 		});
 	}

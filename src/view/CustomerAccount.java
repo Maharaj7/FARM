@@ -50,7 +50,7 @@ public class CustomerAccount {
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblFullNameOf = new JLabel("Full Name of Customer");
-		lblFullNameOf.setBounds(248, 48, 163, 16);
+		lblFullNameOf.setBounds(209, 38, 176, 16);
 		frame.getContentPane().add(lblFullNameOf);
 		
 		JSeparator separator = new JSeparator();

@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import communication.Client_Customer;
+import communication.Client_Farmer;
 import model.Customer;
 import model.Farmer;
 
@@ -122,27 +123,12 @@ public class LoginScreen {
         passwordField.setBounds(68, 81, 242, 33);
         panel.add(passwordField);
         
-        JButton btnLoginAsFarmer = new JButton("Login as Farmer");
-        btnLoginAsFarmer.setBackground(Color.CYAN);
-        btnLoginAsFarmer.setForeground(new Color(128, 128, 0));
-        btnLoginAsFarmer.addActionListener(new ActionListener() {
-            @SuppressWarnings("deprecation")
-            public void actionPerformed(ActionEvent e) {
-                
-                   
-                
-            }
-        });
-        btnLoginAsFarmer.setBounds(32, 126, 123, 33);
-        panel.add(btnLoginAsFarmer);
-        
         btnSignUpAsFarmer = new JButton("Sign Up as Farmer");
         btnSignUpAsFarmer.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
         btnSignUpAsFarmer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-               // FarmerRegistrationPage window = new FarmerRegistrationPage();
-                //window.frmFarmersRegistrationPage_1.setVisible(true);
+            	FarmerRegistrationPage window = new FarmerRegistrationPage();
+                window.frmFarmersRegistrationPage_1.setVisible(true);
             }
         });
         
@@ -155,7 +141,7 @@ public class LoginScreen {
         lblNewUser.setFont(new Font("Khmer MN", Font.PLAIN, 17));
         lblNewUser.setBackground(new Color(0, 0, 0));
         lblNewUser.setForeground(new Color(0, 0, 128));
-        lblNewUser.setBounds(42, 171, 102, 42);
+        lblNewUser.setBounds(27, 171, 117, 42);
         panel.add(lblNewUser);
         
         btnSignUpAsCus = new JButton("Sign Up as Customer");
@@ -175,6 +161,7 @@ public class LoginScreen {
         btnLoginAsCustomer = new JButton("Login as Customer");
         btnLoginAsCustomer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+               try{
             	 /**
                  * After requesting a login to the server it responses 
                  * by querying the database and returning 
@@ -182,30 +169,38 @@ public class LoginScreen {
                  * image and name once the specific Dash board is called
                  * */
                  Client_Customer cus = new Client_Customer();
+               //  boolean success;
                  cus.sendAction("Request Login");            
                 // Customer customer = new Customer("w.maragh@gmail.com","qwert");
                  Customer data = new Customer();
                  
                   @SuppressWarnings("deprecation")
-                Customer customer = new Customer(textField.getText(),passwordField.getText());
-                  cus.sendCustomer(customer);        
-                  cus.receiveResponse(); 
-                  
-                  data = cus.receiveData(); // Data is returned by a Customer Object and is stored in data;
-                  
-                  email = data.getEmail();
-                  fname = data.getfName();
-                  lname = data.getlName();
-                  pImage = data.getPhoto();
-                  
-                 frame.dispose();
-                 CustomerDashBoard window = new CustomerDashBoard();
-                 window.frame.setVisible(true);
+				Customer customer = new Customer(textField.getText(),passwordField.getText());
+                   cus.sendCustomer(customer);        
+                    cus.receiveResponse(); 
+                	 data = cus.receiveData(); // Data is returned by a Customer Object and is stored in data;
+                     
+                     email = data.getEmail();
+                     fname = data.getfName();
+                     lname = data.getlName();
+                     pImage = data.getPhoto();
+                     frame.dispose();
+                    
+                    CustomerDashBoard window = new CustomerDashBoard();
+                    window.frame.setVisible(true);
+               }catch(NullPointerException q)
+               {
+            	   frame.setVisible(true);
+            	   textField.setText("");
+            	   passwordField.setText("");
+               }
+                    
+                
             }
         });
         btnLoginAsCustomer.setForeground(new Color(128, 128, 0));
         btnLoginAsCustomer.setBackground(Color.BLUE);
-        btnLoginAsCustomer.setBounds(179, 126, 139, 33);
+        btnLoginAsCustomer.setBounds(179, 126, 152, 34);
         panel.add(btnLoginAsCustomer);
         
         lblSignIn_1 = new JLabel("Sign In");
@@ -224,6 +219,49 @@ public class LoginScreen {
         lblNewLabel_1.setIcon(new ImageIcon(LoginScreen.class.getResource("/resources/password.png")));
         lblNewLabel_1.setBounds(42, 81, 30, 25);
         panel.add(lblNewLabel_1);
+        
+        JButton btnLoginAsFarmer = new JButton("Login as Farmer");
+        btnLoginAsFarmer.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		try{
+               	 /**
+                    * After requesting a login to the server it responses 
+                    * by querying the database and returning 
+                    * required data that is used to display the persons
+                    * image and name once the specific Dash board is called
+                    * */
+              
+        			 Client_Farmer cus = new Client_Farmer();
+                       cus.sendAction("farmer");            
+                       Farmer data = new Farmer();
+                       
+                        @SuppressWarnings("deprecation")
+      				Farmer customer = new Farmer(textField.getText(),passwordField.getText());
+                         cus.sendFarmer(customer);        
+                          cus.receiveResponse(); 
+                      	 data = cus.receiveData(); // Data is returned by a Customer Object and is stored in data;
+                           
+                           email = data.getEmail();
+                           fname = data.getfName();
+                           lname = data.getlName();
+                           pImage = data.getPhoto();
+                           frame.dispose();
+                           
+                        FarmerDashBoard window = new FarmerDashBoard();
+                        window.frmFarmerDashboard.setVisible(true);
+                       
+                  }catch(NullPointerException q)
+                  {
+               	   frame.setVisible(true);
+               	   textField.setText("");
+               	   passwordField.setText("");
+                  }
+        	}
+        });
+        btnLoginAsFarmer.setForeground(new Color(128, 128, 0));
+        btnLoginAsFarmer.setBackground(Color.BLUE);
+        btnLoginAsFarmer.setBounds(17, 125, 152, 34);
+        panel.add(btnLoginAsFarmer);
         
         lblSignIn = new JLabel("Free Agri-Relations Management (FARM)");
         lblSignIn.setForeground(Color.WHITE);
