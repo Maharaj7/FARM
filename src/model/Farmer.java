@@ -13,6 +13,11 @@ public class Farmer implements java.io.Serializable {
 	private String password;
 	private byte[] photo;
 	
+	public Farmer()
+	{
+		
+	}
+	
 	public Farmer(String fName, String lName, String email, String address, String password, byte[] photo) {
 		super();
 		this.fName = fName;
@@ -23,9 +28,9 @@ public class Farmer implements java.io.Serializable {
 		this.photo = photo;
 	}
 	
-	public Farmer(String address, String password) {
+	public Farmer(String email, String password) {
 		super();
-		this.address = address;
+		this.email = email;
 		this.password = password;
 		
 	}
