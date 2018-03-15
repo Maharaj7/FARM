@@ -178,7 +178,7 @@ public class FarmerRegistrationPage {
     				 {
     					 JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
     				 }
-            	if(Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())){
+            	else if(Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())){
             		Client_Farmer cus = new Client_Farmer();
 					 cus.sendAction("Add Farmer");
 					
@@ -198,6 +198,10 @@ public class FarmerRegistrationPage {
                 login.frame.setVisible(true);
             		
             	}
+            	else if(isValidEmailAddress(emaiTextField.getText())==false)
+            	{
+            		JOptionPane.showMessageDialog(null, "Email Address not valid");
+            	}
     				 else{
 
     					 JOptionPane.showMessageDialog(null, "Passwords dont match!");
@@ -211,4 +215,11 @@ public class FarmerRegistrationPage {
 		label.setBounds(0, 0, 645, 506);
 		frmFarmersRegistrationPage_1.getContentPane().add(label);
     }
+    
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+ }
 }
