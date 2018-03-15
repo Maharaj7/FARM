@@ -11,6 +11,7 @@ import model.Customer;
 import model.Farmer;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
@@ -245,13 +246,16 @@ public class LoginScreen {
                            fname = data.getfName();
                            lname = data.getlName();
                            pImage = data.getPhoto();
+                           JOptionPane.showMessageDialog(null, "Login Successful"); 
                            frame.dispose();
                            
                         FarmerDashBoard window = new FarmerDashBoard();
                         window.frmFarmerDashboard.setVisible(true);
+                        
                        
                   }catch(NullPointerException q)
                   {
+                	  JOptionPane.showMessageDialog(null, "Email and Password is not correct");
                	   frame.setVisible(true);
                	   textField.setText("");
                	   passwordField.setText("");
