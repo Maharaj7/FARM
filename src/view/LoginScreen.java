@@ -128,6 +128,7 @@ public class LoginScreen {
         btnSignUpAsFarmer.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
         btnSignUpAsFarmer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	frame.dispose();
             	FarmerRegistrationPage window = new FarmerRegistrationPage();
                 window.frmFarmersRegistrationPage_1.setVisible(true);
             }
@@ -223,6 +224,9 @@ public class LoginScreen {
         
         JButton btnLoginAsFarmer = new JButton("Login as Farmer");
         btnLoginAsFarmer.addActionListener(new ActionListener() {
+        	/* (non-Javadoc)
+        	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+        	 */
         	public void actionPerformed(ActionEvent e) {
         		try{
                	 /**

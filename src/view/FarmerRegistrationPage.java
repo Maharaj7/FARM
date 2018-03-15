@@ -193,6 +193,7 @@ public class FarmerRegistrationPage {
 				passwordField.setText("");
 				emaiTextField.setText("");
 				confirmPasswordField.setText("");
+				
 				frmFarmersRegistrationPage_1.dispose();
                 LoginScreen login = new LoginScreen();
                 login.frame.setVisible(true);
