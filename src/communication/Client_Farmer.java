@@ -78,6 +78,9 @@ public void getStreams() {
 	 * Sends current farmer's email to the server who is logged in to query the database.
 	 * The email is used as the primary key in order to draw data from the database.
 	 * A function is written in the Login Screen that returns the email of who ever logs in
+	 * 
+	 * 
+	 * singed Maharaj
 	 * */
 	public void sendEmail()
 	{
