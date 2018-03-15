@@ -170,9 +170,8 @@ public class LoginScreen {
                  * image and name once the specific Dash board is called
                  * */
                  Client_Customer cus = new Client_Customer();
-               //  boolean success;
+
                  cus.sendAction("Request Login");            
-                // Customer customer = new Customer("w.maragh@gmail.com","qwert");
                  Customer data = new Customer();
                  
                   @SuppressWarnings("deprecation")
@@ -191,6 +190,7 @@ public class LoginScreen {
                     window.frame.setVisible(true);
                }catch(NullPointerException q)
                {
+            	   JOptionPane.showMessageDialog(null, "Email and Password is not correct");
             	   frame.setVisible(true);
             	   textField.setText("");
             	   passwordField.setText("");
@@ -246,9 +246,7 @@ public class LoginScreen {
                            fname = data.getfName();
                            lname = data.getlName();
                            pImage = data.getPhoto();
-                           
-                           
-                           JOptionPane.showMessageDialog(null, "Login Successful"); 
+                         
                            
                            frame.dispose();
                            
