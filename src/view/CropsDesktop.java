@@ -397,6 +397,11 @@ public class CropsDesktop {
 					desktopPane.add(updateCropsinternalFrame);
 					updateCropsinternalFrame.getContentPane().setLayout(null);
 					
+					JPanel panel = new JPanel();
+					panel.setBounds(47, 42, 262, 368);
+					updateCropsinternalFrame.getContentPane().add(panel);
+					panel.setLayout(null);
+					
 					JScrollPane scrollPane_1 = new JScrollPane();
 					scrollPane_1.setBounds(6, 6, 339, 404);
 					updateCropsinternalFrame.getContentPane().add(scrollPane_1);
@@ -404,7 +409,148 @@ public class CropsDesktop {
 					flag++;
 					
 					
+					JLabel lblNewCrops = new JLabel("Update Crops");
+					lblNewCrops.setForeground(new Color(255, 127, 80));
+					lblNewCrops.setFont(new Font("Herculanum", Font.PLAIN, 16));
+					lblNewCrops.setBounds(97, 16, 113, 16);
+					panel.add(lblNewCrops);
 
+					JLabel lblName = new JLabel("Name:");
+					lblName.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
+					lblName.setBounds(6, 59, 61, 16);
+					panel.add(lblName);
+
+					textField = new JTextField();
+					textField.setBounds(83, 49, 173, 26);
+					panel.add(textField);
+					textField.setColumns(10);
+
+					JLabel lblWeight = new JLabel("Weight(lbs):");
+					lblWeight.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
+					lblWeight.setBounds(6, 97, 81, 16);
+					panel.add(lblWeight);
+
+					textField_1 = new JTextField();
+					textField_1.setColumns(10);
+					textField_1.setBounds(83, 87, 173, 26);
+					panel.add(textField_1);
+
+					JLabel lblCostUnit = new JLabel("Unit Cost:");
+					lblCostUnit.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
+					lblCostUnit.setBounds(6, 139, 81, 16);
+					panel.add(lblCostUnit);
+
+					textField_2 = new JTextField();
+					textField_2.setColumns(10);
+					textField_2.setBounds(83, 129, 173, 26);
+					panel.add(textField_2);
+
+					JLabel lblAvailability = new JLabel("Availability:");
+					lblAvailability.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
+					lblAvailability.setBounds(6, 179, 81, 16);
+					panel.add(lblAvailability);
+
+					JComboBox<String> availableComboBox = new JComboBox<String>();
+					availableComboBox.addItem("In Stock");
+					availableComboBox.addItem("Out of Stock");
+					availableComboBox.setBounds(83, 169, 173, 27);
+					panel.add(availableComboBox);
+
+					JLabel lblAvailableQuantity = new JLabel("Available Quantity:");
+					lblAvailableQuantity.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
+					lblAvailableQuantity.setBounds(6, 218, 130, 16);
+					panel.add(lblAvailableQuantity);
+
+					textField_3 = new JTextField();
+					textField_3.setColumns(10);
+					textField_3.setBounds(135, 208, 75, 26);
+					panel.add(textField_3);
+
+					JLabel imagLabel = new JLabel("");
+					imagLabel.setBounds(135, 258, 99, 58);
+					panel.add(imagLabel);
+
+					JButton btnUploadImage = new JButton("Upload Image");
+					btnUploadImage.setFont(new Font("Hiragino Sans", Font.PLAIN, 13));
+					btnUploadImage.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) throws NullPointerException {
+
+							JFileChooser chooser = new JFileChooser();
+							chooser.showOpenDialog(null);
+							File f = chooser.getSelectedFile();
+							fileName = f.getAbsolutePath();
+							ImageIcon imageIcon = new ImageIcon(new ImageIcon(fileName).getImage().getScaledInstance(imagLabel.getWidth(),imagLabel.getHeight(),Image.SCALE_SMOOTH));
+							imagLabel.setIcon(imageIcon);
+
+							try{
+								File image = new File(fileName);
+								@SuppressWarnings("resource")
+								FileInputStream fis = new FileInputStream(image);
+								ByteArrayOutputStream bos = new ByteArrayOutputStream();
+								byte[] buf = new byte[1024];
+								for(int readNum; (readNum = fis.read(buf))!=-1;)
+								{
+									bos.write(buf,0,readNum);
+								}
+								personImage = bos.toByteArray();
+							}
+							catch(Exception e1)
+							{
+								JOptionPane.showMessageDialog(null, e1);
+							}
+
+						}
+					});
+					btnUploadImage.setBounds(6, 255, 117, 34);
+					panel.add(btnUploadImage);
+
+					JLabel imgLable = new JLabel("");
+					imgLable.setBounds(135, 258, 99, 58);
+					panel.add(imgLable);
+
+					JButton btnAddCrop = new JButton("Update Crop");
+					btnAddCrop.setFont(new Font("Herculanum", Font.BOLD, 14));
+					btnAddCrop.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							if( textField.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()
+									|| textField_3.getText().isEmpty() || personImage == null )
+								 {
+									 JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
+								 }
+							else{
+								try{
+							String selection;
+							if(availableComboBox.getSelectedItem().equals("In Stock"))
+							{
+								selection = "In Stock";
+						
+							}
+							else
+							{
+								selection = "Not In Stock";
+							}
+							Client_Farmer fam = new Client_Farmer();
+							 
+							
+							fam.sendAction("Update Crop");/////////
+							Crop crop = new Crop(ls.getEmail(),personImage,textField.getText(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
+							fam.sendCrop(crop);
+							fam.receiveResponse();
+							
+							
+							JOptionPane.showMessageDialog(null, "Crop Updated!");
+								}
+								catch(NullPointerException | NumberFormatException e1)
+								{
+									e1.printStackTrace();
+								}
+						}
+						}
+					});
+					btnAddCrop.setBounds(81, 333, 117, 29);
+					panel.add(btnAddCrop);
+					
+					
 					updateCropsinternalFrame.addInternalFrameListener(new InternalFrameAdapter(){
 						public void internalFrameClosing(InternalFrameEvent e) {
 							flag = 0; 
