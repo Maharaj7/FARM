@@ -197,7 +197,9 @@ public class CustomerRegistration {
 					textField_2.setText(" ");
 					passwordField.setText("");
 					passwordField_1.setText("");
-	                 
+					 frame.dispose();
+					 LoginScreen login = new LoginScreen();
+	                 login.frame.setVisible(true);
 			
 				 }
 			}
