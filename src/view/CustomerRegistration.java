@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -182,24 +183,27 @@ public class CustomerRegistration {
 				 {
 					 JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
 				 }
+				if(Arrays.equals(passwordField.getPassword(), passwordField_1.getPassword())){
+					 Client_Customer cus = new Client_Customer();
+					 cus.sendAction("Add Customer");
+					
+					 Customer customer = new Customer(textField_1.getText(),textField.getText(),textField_2.getText(),personImage,passwordField.getText());
+					 cus.sendCustomer(customer);
+		             cus.receiveResponse();
+		         
+				JOptionPane.showMessageDialog(null, "Data Saved!");
+				textField.setText(" ");
+				textField_1.setText(" ");
+				textField_2.setText(" ");
+				passwordField.setText("");
+				passwordField_1.setText("");
+				 frame.dispose();
+				 LoginScreen login = new LoginScreen();
+                 login.frame.setVisible(true);
+				}
 				 else{
 					
-						 Client_Customer cus = new Client_Customer();
-						 cus.sendAction("Add Customer");
-						
-						 Customer customer = new Customer(textField_1.getText(),textField.getText(),textField_2.getText(),personImage,passwordField.getText());
-						 cus.sendCustomer(customer);
-			             cus.receiveResponse();
-			         
-					JOptionPane.showMessageDialog(null, "Data Saved!");
-					textField.setText(" ");
-					textField_1.setText(" ");
-					textField_2.setText(" ");
-					passwordField.setText("");
-					passwordField_1.setText("");
-					 frame.dispose();
-					 LoginScreen login = new LoginScreen();
-	                 login.frame.setVisible(true);
+					 JOptionPane.showMessageDialog(null, "Passwords dont match!");
 			
 				 }
 			}

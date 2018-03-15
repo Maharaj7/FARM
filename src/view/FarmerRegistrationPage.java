@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -173,30 +174,33 @@ public class FarmerRegistrationPage {
             @SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
             	if( fNameTextField.getText().isEmpty() || lNameTextField.getText().isEmpty() || farmAddressTextField.getText().isEmpty()
-    					|| passwordField.getText().isEmpty() ||confirmPasswordField.getText().isEmpty() || emaiTextField.getText().isEmpty() )
+    					|| passwordField.getText().isEmpty() ||confirmPasswordField.getText().isEmpty() || emaiTextField.getText().isEmpty()|| personImage == null )
     				 {
     					 JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
     				 }
+            	if(Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())){
+            		Client_Farmer cus = new Client_Farmer();
+					 cus.sendAction("Add Farmer");
+					
+					 Farmer farmer = new Farmer(fNameTextField.getText(),lNameTextField.getText(),emaiTextField.getText(),farmAddressTextField.getText(),passwordField.getText(),personImage);
+					 cus.sendFarmer(farmer);
+		             cus.receiveResponse();
+		         
+				JOptionPane.showMessageDialog(null, "Data Saved!");
+				fNameTextField.setText(" ");
+				lNameTextField.setText(" ");
+				farmAddressTextField.setText(" ");
+				passwordField.setText("");
+				emaiTextField.setText("");
+				confirmPasswordField.setText("");
+				frmFarmersRegistrationPage_1.dispose();
+                LoginScreen login = new LoginScreen();
+                login.frame.setVisible(true);
+            		
+            	}
     				 else{
-    					
-    						 Client_Farmer cus = new Client_Farmer();
-    						 cus.sendAction("Add Farmer");
-    						
-    						 Farmer farmer = new Farmer(fNameTextField.getText(),lNameTextField.getText(),emaiTextField.getText(),farmAddressTextField.getText(),passwordField.getText(),personImage);
-    						 cus.sendFarmer(farmer);
-    			             cus.receiveResponse();
-    			         
-    					JOptionPane.showMessageDialog(null, "Data Saved!");
-    					fNameTextField.setText(" ");
-    					lNameTextField.setText(" ");
-    					farmAddressTextField.setText(" ");
-    					passwordField.setText("");
-    					emaiTextField.setText("");
-    					confirmPasswordField.setText("");
-    					frmFarmersRegistrationPage_1.dispose();
-    	                 LoginScreen login = new LoginScreen();
-    	                 login.frame.setVisible(true);
-    			
+
+    					 JOptionPane.showMessageDialog(null, "Passwords dont match!");
     				 }
             }
         });
