@@ -234,7 +234,7 @@ public class CropsDesktop {
 							if(availableComboBox.getSelectedItem().equals("In Stock"))
 							{
 								selection = "In Stock";
-								//made this
+								//idk y this took so fucking long!!!!!
 							}
 							else
 							{
