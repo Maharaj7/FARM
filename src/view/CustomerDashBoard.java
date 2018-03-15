@@ -154,8 +154,8 @@ public class CustomerDashBoard {
 		 email1 = ls.getEmail();
 		 byte[] photo = ls.image();
 		 
-		// ImageIcon imageIcon = new ImageIcon(new ImageIcon(photo).getImage().getScaledInstance(label_1.getWidth(),label_1.getHeight(),Image.SCALE_SMOOTH));
-			//label_1.setIcon(imageIcon);
+		 ImageIcon imageIcon = new ImageIcon(new ImageIcon(photo).getImage().getScaledInstance(label_1.getWidth(),label_1.getHeight(),Image.SCALE_SMOOTH));
+			label_1.setIcon(imageIcon);
 			
 		
 		JLabel lblNewLabel = new JLabel(name+" "+lname);
