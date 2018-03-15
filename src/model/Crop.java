@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Arrays;
 
+
 public class Crop implements Serializable{
 	/**
 	 * 
@@ -16,6 +17,7 @@ public class Crop implements Serializable{
     private String available;
     private int quantity;
     
+  
     public Crop()
     {
     	

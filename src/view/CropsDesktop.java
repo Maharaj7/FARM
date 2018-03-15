@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Image;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -234,7 +235,7 @@ public class CropsDesktop {
 							if(availableComboBox.getSelectedItem().equals("In Stock"))
 							{
 								selection = "In Stock";
-								//idk y this took so fucking long!!!!!
+						
 							}
 							else
 							{
@@ -304,30 +305,51 @@ public class CropsDesktop {
 				    fam.sendCropList(crops);
 					fam.receiveResponse();
 					list = fam.receiveCropData();
-					
-					JTable table = new JTable();
-					
 					 DefaultTableModel model  = new DefaultTableModel();
+					@SuppressWarnings("serial")
+					JTable table = new JTable(model){
+				        @SuppressWarnings({ "unchecked", "rawtypes" })
+						@Override
+			            public Class getColumnClass(int column)
+			            {
+			               switch (column)
+			                        {
+			                            case 5: return ImageIcon.class;
+			                            default: return Object.class;
+			                        }
+			                    }}; 
+			                    table.setRowHeight(100);
+					
 					 Object[] columnNames = new Object[6];
-					 columnNames[0]="Image";
-					 columnNames[1]="Name";
-					 columnNames[2]="Weight";
-					 columnNames[3]="Cost";
-					 columnNames[4]="Available";
-					 columnNames[5]="Quantity";
 					 
+					 columnNames[5]="Image";
+					 columnNames[0]="Name";
+					 columnNames[1]="Weight";
+					 columnNames[2]="Cost";
+					 columnNames[3]="Available";
+					 columnNames[4]="Quantity";
+				
 					 model.setColumnIdentifiers(columnNames);
 					 
 					  Object[] row = new Object[6];
+			
 					  for(int i=0; i <list.size(); i++)
 					{
-						  row[0] = list.get(i).getImage();
-						  row[1] = list.get(i).getName();
-						  row[2] = list.get(i).getWeight();
-						  row[3] = list.get(i).getCostPerUnit();
-						  row[4] = list.get(i).getAvailable();
-						  row[5] = list.get(i).getQuantity();
-						 // System.out.println(list.get(i).toString());
+						  if(list.get(i).getImage()	!= null)
+						  {
+							  ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
+							  row[5] = image; 
+						  }
+						  else{
+							  row[5] = null;
+						  }
+						  
+						  row[0] = list.get(i).getName();
+						  row[1] = list.get(i).getWeight();
+						  row[2] = list.get(i).getCostPerUnit();
+						  row[3] = list.get(i).getAvailable();
+						  row[4] = list.get(i).getQuantity();
+						  
 						   model.addRow(row); 
 						   
 					}
@@ -405,4 +427,5 @@ public class CropsDesktop {
 		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		menuBar.add(button);
 	}
+	
 }
