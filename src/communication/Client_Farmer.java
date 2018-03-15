@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import model.Crop;
 import model.Farmer;
+import view.LoginScreen;
 
 public class Client_Farmer implements Serializable{
 
@@ -17,7 +18,7 @@ public class Client_Farmer implements Serializable{
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
 	private Socket connection;
-	
+	LoginScreen l = new LoginScreen();
 	public Client_Farmer()
 	{
 		this.createConnection();
@@ -72,6 +73,27 @@ public void getStreams() {
 		
 	}
 	
+	/**
+	 * 
+	 * Sends current farmer's email to the server who is logged in to query the database.
+	 * The email is used as the primary key in order to draw data from the database.
+	 * A function is written in the Login Screen that returns the email of who ever logs in
+	 * */
+	public void sendEmail()
+	{
+		try {
+			os.writeObject(l.getEmail());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 
+	 * 
+	 * 
+	 * */
+	
 	
 	public void sendFarmer(Farmer obj)
 	{
@@ -102,7 +124,8 @@ public void getStreams() {
 				e.printStackTrace();
 			}
 	  }
-	
+	  
+
 	public void receiveResponse()
 	{
 		try {
@@ -131,20 +154,8 @@ public void getStreams() {
 		return null;
 	}
 	
-	/*
-	public Crop receiveCropData()
-	{
-		try {
-			Crop cr = (Crop)is.readObject();
-			return cr;
-		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+
 	
-	*/
 	public ArrayList<Crop> receiveCropData()
 	{
 		try {

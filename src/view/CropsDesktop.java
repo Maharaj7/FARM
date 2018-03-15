@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Image;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -299,12 +298,16 @@ public class CropsDesktop {
 					
 					Client_Farmer fam = new Client_Farmer();
 					fam.sendAction("request crops");
+					fam.sendEmail(); // sends person email to the server in order to query specific data
 					ArrayList<Crop> list = new ArrayList<Crop>();
 					
 					ArrayList<Crop> crops = new ArrayList<Crop>();
 				    fam.sendCropList(crops);
+
 					fam.receiveResponse();
 					list = fam.receiveCropData();
+					
+					
 					 DefaultTableModel model  = new DefaultTableModel();
 					@SuppressWarnings("serial")
 					JTable table = new JTable(model){
@@ -318,7 +321,7 @@ public class CropsDesktop {
 			                            default: return Object.class;
 			                        }
 			                    }}; 
-			                    table.setRowHeight(100);
+			                    table.setRowHeight(120);
 					
 					 Object[] columnNames = new Object[6];
 					 

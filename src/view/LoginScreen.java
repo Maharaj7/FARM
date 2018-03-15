@@ -232,7 +232,7 @@ public class LoginScreen {
                     * image and name once the specific Dash board is called
                     * */
               
-        			 Client_Farmer cus = new Client_Farmer();
+        			  Client_Farmer cus = new Client_Farmer();
                        cus.sendAction("farmer");            
                        Farmer data = new Farmer();
                        
@@ -246,7 +246,10 @@ public class LoginScreen {
                            fname = data.getfName();
                            lname = data.getlName();
                            pImage = data.getPhoto();
+                           
+                           
                            JOptionPane.showMessageDialog(null, "Login Successful"); 
+                           
                            frame.dispose();
                            
                         FarmerDashBoard window = new FarmerDashBoard();

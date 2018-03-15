@@ -27,6 +27,7 @@ public class Crop implements Serializable{
     {
     	this.email = email;
     }
+    
 	public Crop(String email, byte[] image, String name, float weight, float costPerUnit, String available,
 			int quantity) {
 		super();
