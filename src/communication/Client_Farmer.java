@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import model.Crop;
 import model.Farmer;
+import view.CropsDesktop;
 import view.LoginScreen;
 
 public class Client_Farmer implements Serializable{
@@ -19,6 +20,8 @@ public class Client_Farmer implements Serializable{
 	private ObjectOutputStream os;
 	private Socket connection;
 	LoginScreen l = new LoginScreen();
+	CropsDesktop desk = new CropsDesktop();
+	
 	public Client_Farmer()
 	{
 		this.createConnection();
@@ -97,6 +100,15 @@ public void getStreams() {
 	 * 
 	 * */
 	
+	public void sendCropName()
+	{
+		try {
+			os.writeObject(desk.returnCropName());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void sendFarmer(Farmer obj)
 	{

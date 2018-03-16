@@ -31,7 +31,6 @@ import javax.swing.table.DefaultTableModel;
 import communication.Client_Farmer;
 import model.Crop;
 
-import javax.swing.JComboBox;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -49,7 +48,15 @@ public class CropsDesktop {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	LoginScreen ls = new LoginScreen();
+	private JScrollPane scrollPane;
+	private JTable table;
+	private DefaultTableModel model;
+	private ArrayList<Crop> list;
+	private Client_Farmer fam;
+	private ArrayList<Crop> crops;
+	private LoginScreen ls = new LoginScreen();
+	private JPanel tablePanel;
+	private static String cropName;
 
 	/**
 	 * Launch the application.
@@ -156,7 +163,7 @@ public class CropsDesktop {
 					textField_2.setBounds(83, 129, 173, 26);
 					panel.add(textField_2);
 
-					JLabel lblAvailability = new JLabel("Availability:");
+				/*	JLabel lblAvailability = new JLabel("Availability:");
 					lblAvailability.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
 					lblAvailability.setBounds(6, 179, 81, 16);
 					panel.add(lblAvailability);
@@ -165,7 +172,7 @@ public class CropsDesktop {
 					availableComboBox.addItem("In Stock");
 					availableComboBox.addItem("Out of Stock");
 					availableComboBox.setBounds(83, 169, 173, 27);
-					panel.add(availableComboBox);
+					panel.add(availableComboBox);*/
 
 					JLabel lblAvailableQuantity = new JLabel("Available Quantity:");
 					lblAvailableQuantity.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
@@ -231,15 +238,14 @@ public class CropsDesktop {
 							else{
 								try{
 							String selection;
-							if(availableComboBox.getSelectedItem().equals("In Stock"))
-							{
-								selection = "In Stock";
-						
-							}
-							else
-							{
-								selection = "Not In Stock";
-							}
+							 if(Integer.parseInt(textField_3.getText()) >= 1)
+							 {
+								 selection = "In Stock";
+							 }
+							 else{
+								 selection = "Not In Stock";
+							 }
+						     
 							Client_Farmer fam = new Client_Farmer();
 							 
 							
@@ -286,31 +292,49 @@ public class CropsDesktop {
 		mntmViewAllCrops.setFont(new Font("Khmer MN", Font.PLAIN, 17));
 		mntmViewAllCrops.addMouseListener(new MouseAdapter() {
 			int flag = 0;
+			@SuppressWarnings("serial")
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				//Test window = new Test();
+				//window.frame.setVisible(true);
+				
+				
 				if(flag == 0)
 				{
+					
 					JInternalFrame viewAllInternalFrame = new JInternalFrame("View All Crops",true, true, true, true);
 					viewAllInternalFrame.getContentPane().setBackground(new Color(218, 112, 214));
 					viewAllInternalFrame.setBounds(415, 66, 375, 462);
 					desktopPane.add(viewAllInternalFrame);
 					viewAllInternalFrame.getContentPane().setLayout(null);
 					
-					Client_Farmer fam = new Client_Farmer();
+					JButton refresh = new JButton("Refresh");
+					refresh.addActionListener(new ActionListener(){
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							
+					       
+										
+						}
+						
+					});
+					  tablePanel = new JPanel();
+					 fam = new Client_Farmer();
 					fam.sendAction("request crops");
 					fam.sendEmail(); // sends person email to the server in order to query specific data
-					ArrayList<Crop> list = new ArrayList<Crop>();
+					list = new ArrayList<Crop>();
 					
-					ArrayList<Crop> crops = new ArrayList<Crop>();
+					 crops = new ArrayList<Crop>();
 				    fam.sendCropList(crops);
 
 					fam.receiveResponse();
 					list = fam.receiveCropData();
 					
 					
-					 DefaultTableModel model  = new DefaultTableModel();
-					@SuppressWarnings("serial")
-					JTable table = new JTable(model){
+					  model  = new DefaultTableModel();
+					
+					    table = new JTable(model){
 				        @SuppressWarnings({ "unchecked", "rawtypes" })
 						@Override
 			            public Class getColumnClass(int column)
@@ -335,7 +359,7 @@ public class CropsDesktop {
 					 model.setColumnIdentifiers(columnNames);
 					 
 					  Object[] row = new Object[6];
-			
+
 					  for(int i=0; i <list.size(); i++)
 					{
 						  if(list.get(i).getImage()	!= null)
@@ -357,12 +381,16 @@ public class CropsDesktop {
 						   
 					}
 					  table.setModel(model);
-					  JScrollPane scrollPane = new JScrollPane(table);
+					   scrollPane = new JScrollPane(table);
 						scrollPane.setBounds(39, 244, 545, -186);
-						
-						
-						viewAllInternalFrame.setLayout(new BorderLayout());
-						viewAllInternalFrame.add(scrollPane,BorderLayout.CENTER);
+					
+						tablePanel.setLayout(new BorderLayout());
+					tablePanel.add(scrollPane,BorderLayout.CENTER);
+					refresh.setBounds(0, 0, 89, 23);
+					viewAllInternalFrame.add(refresh);
+					viewAllInternalFrame.setLayout(new BorderLayout());
+					
+					viewAllInternalFrame.add(tablePanel);
 					
 					
 					viewAllInternalFrame.setVisible(true);
@@ -375,6 +403,7 @@ public class CropsDesktop {
 					});
 
 				}
+				
 				
 			}
 		});
@@ -445,7 +474,7 @@ public class CropsDesktop {
 					textField_2.setBounds(83, 129, 173, 26);
 					panel.add(textField_2);
 
-					JLabel lblAvailability = new JLabel("Availability:");
+					/*JLabel lblAvailability = new JLabel("Availability:");
 					lblAvailability.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
 					lblAvailability.setBounds(6, 179, 81, 16);
 					panel.add(lblAvailability);
@@ -455,7 +484,7 @@ public class CropsDesktop {
 					availableComboBox.addItem("Out of Stock");
 					availableComboBox.setBounds(83, 169, 173, 27);
 					panel.add(availableComboBox);
-
+                     */
 					JLabel lblAvailableQuantity = new JLabel("Available Quantity:");
 					lblAvailableQuantity.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 13));
 					lblAvailableQuantity.setBounds(6, 218, 130, 16);
@@ -508,7 +537,7 @@ public class CropsDesktop {
 					imgLable.setBounds(135, 258, 99, 58);
 					panel.add(imgLable);
 
-					JButton btnAddCrop = new JButton("Update Crop");
+					JButton btnAddCrop = new JButton("Update"); 
 					btnAddCrop.setFont(new Font("Herculanum", Font.BOLD, 14));
 					btnAddCrop.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -520,7 +549,7 @@ public class CropsDesktop {
 							else{
 								try{
 							String selection;
-							if(availableComboBox.getSelectedItem().equals("In Stock"))
+							if(Integer.parseInt(textField_3.getText() ) >=1)
 							{
 								selection = "In Stock";
 						
@@ -531,9 +560,10 @@ public class CropsDesktop {
 							}
 							Client_Farmer fam = new Client_Farmer();
 							 
-							
+							cropName = textField.getText();
 							fam.sendAction("Update Crop");/////////
 							Crop crop = new Crop(ls.getEmail(),personImage,textField.getText(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
+							fam.sendCropName();
 							fam.sendCrop(crop);
 							fam.receiveResponse();
 							
@@ -575,6 +605,13 @@ public class CropsDesktop {
 		button.setIcon(new ImageIcon(CropsDesktop.class.getResource("/resources/backIcon.png")));
 		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		menuBar.add(button);
+	}
+	
+	public String returnCropName()
+	{
+		
+			return cropName;
+			
 	}
 	
 }
