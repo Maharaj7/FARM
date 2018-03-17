@@ -6,8 +6,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
+import model.Basket;
+import model.Crop;
 import model.Customer;
+import view.LoginScreen;
 
 public class Client_Customer implements Serializable{
 
@@ -15,6 +19,7 @@ public class Client_Customer implements Serializable{
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
 	private Socket connection;
+	LoginScreen l = new LoginScreen();
 	
 	public Client_Customer()
 	{
@@ -81,6 +86,15 @@ public class Client_Customer implements Serializable{
 		}
 	}
 	
+	public void sendBasket(Basket obj)
+	{
+		try {
+			os.writeObject(obj);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void receiveResponse()
 	{
@@ -89,6 +103,16 @@ public class Client_Customer implements Serializable{
 			Boolean flag = (Boolean)is.readObject();
 		 
 		} catch (ClassNotFoundException | IOException | ClassCastException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendEmail()
+	{
+		try {
+			os.writeObject(l.getEmail());
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -108,7 +132,28 @@ public class Client_Customer implements Serializable{
 		}
 		return null;
 	}
-
+ 
+	  public void sendBasketList(ArrayList<Basket> basket)
+	  {
+		  try {
+				os.writeObject(basket);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	  }
 	
+		public ArrayList<Basket> receiveBasketData()
+		{
+			try {
+				@SuppressWarnings("unchecked")
+				ArrayList<Basket> bas = (ArrayList<Basket>)is.readObject();
+				return bas;
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
 	
 }

@@ -26,6 +26,7 @@ public class LoginScreen {
 
     private static byte[] pImage;
     private static String email,fname,lname;
+    private static float earnings;
     JFrame frame;
     private JTextField textField;
     private JPasswordField passwordField;
@@ -46,12 +47,13 @@ public class LoginScreen {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+					
                     LoginScreen window = new LoginScreen();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            } 
         });
     }
 
@@ -66,6 +68,7 @@ public class LoginScreen {
      * Initialize the contents of the frame.
      */
     private void initialize() {
+    	
         frame = new JFrame("Free Agri-Relations Management");
         frame.getContentPane().setBackground(SystemColor.activeCaption);
         frame.setBounds(100, 100, 645, 468);
@@ -250,13 +253,13 @@ public class LoginScreen {
                            fname = data.getfName();
                            lname = data.getlName();
                            pImage = data.getPhoto();
-                         
+                           earnings = data.getEarnings();
                            
                            frame.dispose();
                            
                         FarmerDashBoard window = new FarmerDashBoard();
                         window.frmFarmerDashboard.setVisible(true);
-                        
+                         
                        
                   }catch(NullPointerException q)
                   {
@@ -304,5 +307,10 @@ public class LoginScreen {
     public String getLname()
     {
         return lname;
+    }
+    
+    public float getEarnings()
+    {
+    	return earnings;
     }
 }

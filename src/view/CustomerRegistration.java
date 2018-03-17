@@ -187,7 +187,7 @@ public class CustomerRegistration {
 					 Client_Customer cus = new Client_Customer();
 					 cus.sendAction("Add Customer");
 					
-					 Customer customer = new Customer(textField_1.getText(),textField.getText(),textField_2.getText(),personImage,passwordField.getText());
+					 Customer customer = new Customer(textField_1.getText(),textField.getText(),textField_2.getText(),personImage,passwordField.getText(),0.0f);
 					 cus.sendCustomer(customer);
 		             cus.receiveResponse();
 		         

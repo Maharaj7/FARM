@@ -20,6 +20,7 @@ public class FarmerDashBoard {
 
     JFrame frmFarmerDashboard;
     String name,lname,email1;
+    float earnings;
     /**
      * Launch the application.
      */
@@ -73,6 +74,7 @@ public class FarmerDashBoard {
         JButton viewAllCustomersBtn = new JButton("");
         viewAllCustomersBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		
         		
         	}
         });
@@ -138,15 +140,40 @@ public class FarmerDashBoard {
 		lname = ls.getLname();
 		 email1 = ls.getEmail();
 		 byte[] photo = ls.image();
+		 earnings = ls.getEarnings();
 		 
 		ImageIcon imageIcon = new ImageIcon(new ImageIcon(photo).getImage().getScaledInstance(label_1.getWidth(),label_1.getHeight(),Image.SCALE_SMOOTH));
 	    label_1.setIcon(imageIcon);
 	    
+	    JLabel namelbl = new JLabel(name+" "+lname);
+	    namelbl.setBounds(48, 308, 128, 14);
+	    frmFarmerDashboard.getContentPane().add(namelbl);
+	    
+	    JLabel emaillbl = new JLabel(email1);
+	    emaillbl.setBounds(598, 308, 107, 14);
+	    frmFarmerDashboard.getContentPane().add(emaillbl);
+	    
+	    JLabel earninglbl = new JLabel(String.valueOf(earnings));
+	    earninglbl.setBounds(370, 308, 46, 14);
+	    frmFarmerDashboard.getContentPane().add(earninglbl);
+	    
+	    JLabel lblName = new JLabel("Name");
+	    lblName.setBounds(48, 283, 68, 14);
+	    frmFarmerDashboard.getContentPane().add(lblName);
+	    
+	    JLabel lblEarnings = new JLabel("Earnings");
+	    lblEarnings.setBounds(370, 283, 82, 14);
+	    frmFarmerDashboard.getContentPane().add(lblEarnings);
+	    
+	    JLabel lblEmailAddress = new JLabel("Email Address");
+	    lblEmailAddress.setBounds(610, 283, 93, 14);
+	    frmFarmerDashboard.getContentPane().add(lblEmailAddress);
+	    
+	    
 	    JLabel label = new JLabel("");
 	    label.setIcon(new ImageIcon(FarmerDashBoard.class.getResource("/resources/bckgrd2.png")));
-	    label.setBounds(0, 0, 752, 499);
+	    label.setBounds(0, 0, 752, 490);
 	    frmFarmerDashboard.getContentPane().add(label);
-			
         
     }
 }

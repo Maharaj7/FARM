@@ -70,16 +70,14 @@ public class CustomerDashBoard {
 		frame.getContentPane().add(addFundsbtn);
 		
 		JButton searchCropsBtn = new JButton("");
-		searchCropsBtn.setToolTipText("Purchase crops here");
-		
-		searchCropsBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		searchCropsBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				PurchaseCrops_Customers window = new PurchaseCrops_Customers();
-				window.frmPurchaseCrops.setVisible(true);
+				SearchCrops window = new SearchCrops();
+				window.frame.setVisible(true);
 			}
 		});
+		searchCropsBtn.setToolTipText("Purchase crops here");
 		
 		searchCropsBtn.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/searchCrops.png")));
 		searchCropsBtn.setBounds(290, 359, 168, 151);

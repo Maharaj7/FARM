@@ -11,10 +11,12 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class CustomerAccount {
 
 	JFrame frame;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -63,7 +65,7 @@ public class CustomerAccount {
 		frame.getContentPane().add(lblCurrentBalance);
 		
 		JLabel lblAddFunds = new JLabel("Add Funds:");
-		lblAddFunds.setBounds(375, 181, 98, 16);
+		lblAddFunds.setBounds(261, 88, 98, 16);
 		frame.getContentPane().add(lblAddFunds);
 		
 		JButton btnMyDashboard = new JButton("My DashBoard");
@@ -79,6 +81,19 @@ public class CustomerAccount {
 		btnMyDashboard.setIcon(new ImageIcon(CustomerAccount.class.getResource("/resources/backIcon.png")));
 		btnMyDashboard.setBounds(230, 244, 163, 29);
 		frame.getContentPane().add(btnMyDashboard);
+		
+		textField = new JTextField();
+		textField.setBounds(251, 115, 86, 20);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JButton btnAdd = new JButton("Add");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		btnAdd.setBounds(251, 143, 89, 23);
+		frame.getContentPane().add(btnAdd);
 	}
-
 }

@@ -182,7 +182,7 @@ public class FarmerRegistrationPage {
             		Client_Farmer cus = new Client_Farmer();
 					 cus.sendAction("Add Farmer");
 					
-					 Farmer farmer = new Farmer(fNameTextField.getText(),lNameTextField.getText(),emaiTextField.getText(),farmAddressTextField.getText(),passwordField.getText(),personImage);
+					 Farmer farmer = new Farmer(fNameTextField.getText(),lNameTextField.getText(),emaiTextField.getText(),farmAddressTextField.getText(),passwordField.getText(),personImage,0.0f);
 					 cus.sendFarmer(farmer);
 		             cus.receiveResponse();
 		         
