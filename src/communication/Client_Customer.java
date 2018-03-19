@@ -118,6 +118,26 @@ public class Client_Customer implements Serializable{
 		}
 	}
 	
+	public void sendExactEmail(String email)
+	{
+		try {
+			os.writeObject(email);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendExactName(String crop)
+	{
+		try {
+			os.writeObject(crop);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public Customer receiveData()
 	{
 		try {
@@ -155,5 +175,27 @@ public class Client_Customer implements Serializable{
 			}
 			return null;
 		}
-	
+		
+		  public void sendCropList(ArrayList<Crop> crop)
+		  {
+			  try {
+					os.writeObject(crop);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		  }
+		  
+		  public ArrayList<Crop> receiveCropData()
+			{
+				try {
+					@SuppressWarnings("unchecked")
+					ArrayList<Crop> cr = (ArrayList<Crop>)is.readObject();
+					return cr;
+				} catch (ClassNotFoundException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
 }

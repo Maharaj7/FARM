@@ -21,7 +21,8 @@ public class Basket implements Serializable{
 	}
 
 
-	public Basket(String farmerEmail, String customerEmail, String itemName, int quantity, float cost, float weight) {
+	public Basket(String farmerEmail, String customerEmail, String itemName, int quantity, float cost,
+			float weight) {
 		super();
 		this.farmerEmail = farmerEmail;
 		this.customerEmail = customerEmail;
@@ -29,7 +30,6 @@ public class Basket implements Serializable{
 		this.quantity = quantity;
 		this.cost = cost;
 		this.weight = weight;
-
 	}
 
 
@@ -90,6 +90,9 @@ public class Basket implements Serializable{
 
 	public void setWeight(float weight) {
 		this.weight = weight;
-	}	
+	}
+
+
+	
 	
 }

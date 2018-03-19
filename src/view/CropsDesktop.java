@@ -231,7 +231,39 @@ public class CropsDesktop {
 					btnAddCrop.setFont(new Font("Herculanum", Font.BOLD, 14));
 					btnAddCrop.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							if( textField.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()
+							
+							Client_Farmer fam = new Client_Farmer();
+							fam.sendAction("request crops");
+							fam.sendEmail(); // sends person email to the server in order to query specific data
+							ArrayList<Crop> list = new ArrayList<Crop>();
+							
+							ArrayList<Crop> crops = new ArrayList<Crop>();
+						    fam.sendCropList(crops);
+
+							fam.receiveResponse();
+							list = fam.receiveCropData();
+							@SuppressWarnings("unused")
+							boolean exists;
+							
+							   for(int i =0; i<list.size();i++)
+							   {
+							     if(list.get(i).getName().toUpperCase().contains(textField.getText().toUpperCase()))
+							     {
+							    	  exists = true;
+							     }
+							     else{
+							    	 exists = false;
+							     }
+							           
+							   }
+							   
+							   if(exists = true)
+							   {
+								   JOptionPane.showMessageDialog(null, "Crop Already exists");
+							    	
+							   }
+							
+							   else if( textField.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()
 									|| textField_3.getText().isEmpty() || personImage == null )
 								 {
 									 JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
@@ -247,13 +279,13 @@ public class CropsDesktop {
 								 selection = "Not In Stock";
 							 }
 						     
-							Client_Farmer fam = new Client_Farmer();
+							 Client_Farmer fam1 = new Client_Farmer();
 							 
 							
-							fam.sendAction("Add Crop");
+							fam1.sendAction("Add Crop");
 							Crop crop = new Crop(ls.getEmail(),personImage,textField.getText(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
-							fam.sendCrop(crop);
-							fam.receiveResponse();
+							fam1.sendCrop(crop);
+							fam1.receiveResponse();
 							
 							
 							JOptionPane.showMessageDialog(null, "Crop Added!");
@@ -296,8 +328,7 @@ public class CropsDesktop {
 			@SuppressWarnings("serial")
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				//Test window = new Test();
-				//window.frame.setVisible(true);
+			
 				
 				
 				if(flag == 0)
@@ -309,16 +340,7 @@ public class CropsDesktop {
 					desktopPane.add(viewAllInternalFrame);
 					viewAllInternalFrame.getContentPane().setLayout(null);
 					
-					JButton refresh = new JButton("Refresh");
-					refresh.addActionListener(new ActionListener(){
-
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
-							
-										
-						}
-						
-					});
+			
 					  tablePanel = new JPanel();
 					Client_Farmer fam = new Client_Farmer();
 					fam.sendAction("request crops");
@@ -391,8 +413,7 @@ public class CropsDesktop {
 					
 						tablePanel.setLayout(new BorderLayout());
 					tablePanel.add(scrollPane,BorderLayout.CENTER);
-					refresh.setBounds(0, 0, 89, 23);
-					viewAllInternalFrame.add(refresh);
+
 					viewAllInternalFrame.setLayout(new BorderLayout());
 					
 					viewAllInternalFrame.add(tablePanel);
@@ -580,8 +601,10 @@ public class CropsDesktop {
 							 
 							cropName = availableComboBox.getSelectedItem().toString();
 							fam.sendAction("Update Crop");/////////
+							
 							Crop crop = new Crop(ls.getEmail(),cropImage,availableComboBox.getSelectedItem().toString(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
 							fam.sendCropName();
+							fam.sendEmail();
 							fam.sendCrop(crop);
 							fam.receiveResponse();
 							

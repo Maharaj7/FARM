@@ -23,12 +23,15 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SearchCrops {
 
      JFrame frame;
 	private JTable table;
 	CheckOut checkOut = new CheckOut();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -190,6 +193,13 @@ public class SearchCrops {
 		panel_1.add(panel_2);
 		JMenuBar menuBar = new JMenuBar();
 		JButton btnMyDashboard = new JButton("My DashBoard");
+		btnMyDashboard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				CustomerDashBoard window = new CustomerDashBoard();
+				window.frame.setVisible(true);
+			}
+		});
 		frame.setJMenuBar(menuBar);
 		btnMyDashboard.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		btnMyDashboard.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/backIcon.png")));

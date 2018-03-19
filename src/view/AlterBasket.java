@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 
 public class AlterBasket {
 
-	private JFrame frame;
+	JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -55,7 +55,7 @@ public class AlterBasket {
 				cl.sendAction("Update Quantity");
 				Basket bas = new Basket();
 				
-				
+				//we are here 
 				JOptionPane.showMessageDialog(null, "Crop Removed");
 			}
 		});

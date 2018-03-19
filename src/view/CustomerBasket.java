@@ -4,10 +4,11 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.Font;
-import java.awt.Image;
+
 
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -36,6 +37,8 @@ public class CustomerBasket {
 	JFrame frmCustomerBasket;
     JTable table;
     CheckOut checkOut = new CheckOut();
+     static String email,itemName,quantity,cost;
+     
 	/**
 	 * Launch the application.
 	 */
@@ -62,7 +65,7 @@ public class CustomerBasket {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings("serial")
+
 	private void initialize() {
 		frmCustomerBasket = new JFrame();
 		frmCustomerBasket.setTitle("Customer Basket");
@@ -94,21 +97,10 @@ public class CustomerBasket {
 		frmCustomerBasket.getContentPane().add(separator_1);
 		
 		JLabel lblSubtotal = new JLabel("Subtotal:");
-		lblSubtotal.setBounds(518, 415, 61, 16);
+		lblSubtotal.setBounds(504, 414, 61, 16);
 		frmCustomerBasket.getContentPane().add(lblSubtotal);
 		
-		JLabel label = new JLabel("");
-		label.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				frmCustomerBasket.dispose();
-				CheckoutPage window = new CheckoutPage();
-				window.frmCheckOut.setVisible(true);
-			}
-		});
-		label.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/checkoutBtn.png")));
-		label.setBounds(276, 437, 111, 35);
-		frmCustomerBasket.getContentPane().add(label);
+		
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(18, 107, 628, 284);
@@ -130,6 +122,16 @@ public class CustomerBasket {
 		list = fam.receiveBasketData();
 		
 		
+		/**
+		 * To go in Controller class
+		 * ***/
+		float totalCost=0.0f;
+		for(int i=0; i<list.size(); i++)
+		{
+			totalCost = totalCost + list.get(i).getCost();
+		}
+		
+		
 		DefaultTableModel model  = new DefaultTableModel();
 		table = new JTable(model);
 		table.addMouseListener(new MouseAdapter() {
@@ -137,34 +139,35 @@ public class CustomerBasket {
 			public void mouseClicked(MouseEvent e) {
 				int index = table.getSelectedRow();
 		 		TableModel tmodel = table.getModel();
+		 		AlterBasket ab = new AlterBasket();
+		 		ab.frame.setVisible(true);
+		 		 itemName = tmodel.getValueAt(index, 0).toString();
+		 		 quantity = tmodel.getValueAt(index, 1).toString();
+		 		cost = tmodel.getValueAt(index, 2).toString();
+		 		 email = tmodel.getValueAt(index, 3).toString();
+		 		
 		 		
 			}
 		});
-		 Object[] columnNames = new Object[3];
+		 Object[] columnNames = new Object[4];
 		 
 		 columnNames[0]="Item Name";
 		 columnNames[1] = "Quantity";
 		 columnNames[2] = "cost";
+		 columnNames[3] = "Email";
 		
 	
 		 model.setColumnIdentifiers(columnNames);
 		 
-		  Object[] row = new Object[3];
+		  Object[] row = new Object[4];
 
 		  for(int i=0; i <list.size(); i++)
 		{
-			//  if(list.get(i).getImage()	!= null)
-			 // {
-				 // ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
-				//  row[6] = image; 
-			//  }
-			//  else{
-			//	  row[6] = null;
-			//  }
 			  
 			  row[0] = list.get(i).getItemName();
 			  row[1] = list.get(i).getQuantity();
 			  row[2] = list.get(i).getCost();
+			  row[3] = list.get(i).getFarmerEmail();
 			  
 			  
 			   model.addRow(row); 
@@ -215,5 +218,93 @@ public class CustomerBasket {
 		btnAddCrops.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		btnAddCrops.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/addCrop_sml.png")));
 		menuBar.add(btnAddCrops);
+		
+		JLabel label = new JLabel("");
+		label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				
+				
+				Client_Customer  fam = new Client_Customer();
+				fam.sendAction("request customer basket");
+				fam.sendEmail();
+				ArrayList<Basket> list = new ArrayList<Basket>();
+				
+				ArrayList<Basket> crops = new ArrayList<Basket>();
+			    fam.sendBasketList(crops);
+
+				fam.receiveResponse();
+				list = fam.receiveBasketData();
+				
+				Client_Customer fam1 = new Client_Customer();
+				fam1.sendAction("request all crops");
+				ArrayList<Crop> list1 = new ArrayList<Crop>();
+				
+				ArrayList<Crop> crops1 = new ArrayList<Crop>();
+			    fam1.sendCropList(crops1);
+
+				fam1.receiveResponse();
+				list1 = fam1.receiveCropData();
+			    
+				int size = list1.size();
+				int count =0;
+				try{
+				do{
+				
+				for(int i =0; i<list1.size();i++)
+				   {
+					  
+				    if(list1.get(i).getName().compareToIgnoreCase(list.get(count).getItemName())==0 && list1.get(i).getEmail().compareToIgnoreCase(list.get(count).getFarmerEmail())==0) 
+					{
+				    	/**
+						 * update crops data with changes to quantity after 
+						 * **/
+						Client_Farmer fam11 = new Client_Farmer();
+						 int quantity = list1.get(i).getQuantity() - list.get(count).getQuantity();
+						fam11.sendAction("Update Crop");
+						Crop crop = new Crop(list1.get(i).getEmail(),list1.get(i).getImage(),list1.get(i).getName(),list1.get(i).getWeight(),list1.get(i).getCostPerUnit(),list1.get(i).getAvailable(),quantity);
+						fam11.sendExactCropName(list1.get(i).getName());
+						fam11.sendExactEmail(list1.get(i).getEmail());
+						fam11.sendCrop(crop);
+						fam11.receiveResponse();
+				      count ++;
+				    	
+				     }
+				     else{
+				    	 System.out.println("not found"); 
+				     }	
+				           
+				   }
+				}while(count <= size);
+				    
+				Client_Customer cus = new Client_Customer();
+				cus.sendEmail();
+				cus.sendAction("Remove Basket Data");
+				JOptionPane.showMessageDialog(null, "Check out Completed");
+				}
+				catch(IndexOutOfBoundsException e1) //Currently causes an IndexOutOfBounds error but works just fine once caught. 
+				{
+					Client_Customer cus = new Client_Customer();
+					cus.sendEmail();
+					cus.sendAction("Remove Basket Data");
+					JOptionPane.showMessageDialog(null, "Check out Completed");
+					
+				}
+				catch(NullPointerException q)
+				{
+					JOptionPane.showMessageDialog(null, q.getMessage());
+				}
+				
+				
+				
+			}
+		});
+		label.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/checkoutBtn.png")));
+		label.setBounds(276, 437, 111, 35);
+		frmCustomerBasket.getContentPane().add(label);
+		
+		JLabel label_1 = new JLabel(Float.toString(totalCost));
+		label_1.setBounds(562, 415, 46, 14);
+		frmCustomerBasket.getContentPane().add(label_1);
 	}
 }

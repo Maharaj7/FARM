@@ -100,10 +100,31 @@ public void getStreams() {
 	 * 
 	 * */
 	
+	
+	public void sendExactEmail(String email)
+	{
+		try {
+			os.writeObject(email);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void sendCropName()
 	{
 		try {
 			os.writeObject(desk.returnCropName());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendExactCropName(String crop)
+	{
+		try {
+			os.writeObject(crop);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

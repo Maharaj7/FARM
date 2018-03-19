@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Arrays;
+
 
 
 public class Crop implements Serializable{
@@ -27,7 +27,7 @@ public class Crop implements Serializable{
     {
     	this.email = email;
     }
-    
+
 	public Crop(String email, byte[] image, String name, float weight, float costPerUnit, String available,
 			int quantity) {
 		super();
@@ -39,6 +39,7 @@ public class Crop implements Serializable{
 		this.available = available;
 		this.quantity = quantity;
 	}
+
 
 	public String getEmail() {
 		return email;
@@ -95,19 +96,7 @@ public class Crop implements Serializable{
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	@Override
-	public String toString() {
-		return "Crop [email=" + email + ", image=" + Arrays.toString(image) + ", name=" + name + ", weight=" + weight
-				+ ", costPerUnit=" + costPerUnit + ", available=" + available + ", quantity=" + quantity + "]";
-	}
-
-	
-	
+    
     
     
 }

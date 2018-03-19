@@ -9,7 +9,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import communication.Client_Customer;
+import communication.Client_Farmer;
 import model.Basket;
+import model.Crop;
 
 import javax.swing.JComboBox;
 import javax.imageio.ImageIO;
@@ -18,6 +20,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class CheckOut {
@@ -138,12 +141,16 @@ public class CheckOut {
 					JOptionPane.showMessageDialog(null, "insufficient Quantity of Item ");
 				}
 				else{
+					
+					
 					 
 					Client_Customer cus = new Client_Customer();
 					Basket basket = new Basket(email,l.getEmail(),textField.getText(),Integer.parseInt(textField_1.getText()),Float.parseFloat(textField_3.getText()),Float.parseFloat(textField_2.getText()));
 					cus.sendAction("Add to Basket");
 					cus.sendBasket(basket);
 					cus.receiveResponse();
+					
+					
 					JOptionPane.showMessageDialog(null, "Added to Basket!");
 					frame.dispose();
 				}

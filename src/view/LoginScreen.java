@@ -34,6 +34,9 @@ public class LoginScreen {
     private JButton btnSignUpAsFarmer;
     private JLabel lblSignIn;
     private JLabel label;
+    /**
+     * 
+     */
     private JLabel lblNewUser;
     private JButton btnSignUpAsCus;
     private JButton btnLoginAsCustomer;
