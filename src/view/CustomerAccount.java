@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -12,12 +13,14 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class CustomerAccount {
 
 	JFrame frame;
 	private JTextField textField;
-
+	 static float cFunds=0.0f;
+	 LoginScreen ls = new LoginScreen();
 	/**
 	 * Launch the application.
 	 */
@@ -51,7 +54,8 @@ public class CustomerAccount {
 		frame.setTitle("Customer Account");
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblFullNameOf = new JLabel("Full Name of Customer");
+		JLabel lblFullNameOf = new JLabel(ls.getFname()+ " " +ls.getLname() + " Account");
+		lblFullNameOf.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFullNameOf.setBounds(209, 38, 176, 16);
 		frame.getContentPane().add(lblFullNameOf);
 		
@@ -60,12 +64,12 @@ public class CustomerAccount {
 		separator.setBounds(209, 65, 176, 12);
 		frame.getContentPane().add(separator);
 		
-		JLabel lblCurrentBalance = new JLabel("Current Balance:");
-		lblCurrentBalance.setBounds(46, 181, 117, 16);
+		JLabel lblCurrentBalance = new JLabel("Current Balance: $"+cFunds);
+		lblCurrentBalance.setBounds(48, 198, 117, 16);
 		frame.getContentPane().add(lblCurrentBalance);
 		
-		JLabel lblAddFunds = new JLabel("Add Funds:");
-		lblAddFunds.setBounds(261, 88, 98, 16);
+		JLabel lblAddFunds = new JLabel("Enter Funds to be Added:");
+		lblAddFunds.setBounds(231, 94, 131, 16);
 		frame.getContentPane().add(lblAddFunds);
 		
 		JButton btnMyDashboard = new JButton("My DashBoard");
@@ -83,17 +87,36 @@ public class CustomerAccount {
 		frame.getContentPane().add(btnMyDashboard);
 		
 		textField = new JTextField();
-		textField.setBounds(251, 115, 86, 20);
+		textField.setBounds(252, 121, 86, 20);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try{
+				float funds =0.0f;
+				funds = funds + Float.parseFloat(textField.getText());
+				cFunds = funds;
+				JOptionPane.showMessageDialog(null, "Funds Added!");
+				btnAdd.setEnabled(false);
 				
+				}
+				catch(NullPointerException | NumberFormatException e)
+				{
+					JOptionPane.showMessageDialog(null, "Ivalid Value");
+				}
 			}
 		});
-		btnAdd.setBounds(251, 143, 89, 23);
+		btnAdd.setBounds(252, 149, 89, 23);
 		frame.getContentPane().add(btnAdd);
+		
+		JLabel lblNewBalance = new JLabel("New Balance: ");
+		lblNewBalance.setBounds(423, 199, 86, 14);
+		frame.getContentPane().add(lblNewBalance);
+	}
+	float returnFunds()
+	{
+		return cFunds;
 	}
 }

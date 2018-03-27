@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 public class AlterBasket {
 
 	JFrame frame;
+	CustomerBasket cb = new CustomerBasket();
 
 	/**
 	 * Launch the application.
@@ -51,12 +52,18 @@ public class AlterBasket {
 		JButton btnRemoveFromBasket = new JButton("Remove From Basket");
 		btnRemoveFromBasket.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Client_Customer cl = new Client_Customer();
+			/*	Client_Customer cl = new Client_Customer();
 				cl.sendAction("Update Quantity");
-				Basket bas = new Basket();
-				
-				//we are here 
+				Basket bas = new Basket();*/
+				String itemName = cb.itemName;
+				 Client_Customer cus = new Client_Customer();
+				 cus.sendExactName(itemName);
+				 cus.sendAction("Remove basket item");
+		 		 
+		 		
+		 		 cus.receiveResponse();
 				JOptionPane.showMessageDialog(null, "Crop Removed");
+				frame.dispose();
 			}
 		});
 		btnRemoveFromBasket.setBounds(64, 92, 240, 23);

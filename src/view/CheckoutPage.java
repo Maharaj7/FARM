@@ -49,7 +49,7 @@ public class CheckoutPage {
 	private void initialize() {
 		frmCheckOut = new JFrame();
 		frmCheckOut.setTitle("CheckOut");
-		frmCheckOut.setBounds(100, 100, 610, 374);
+		frmCheckOut.setBounds(100, 100, 610, 486);
 		frmCheckOut.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCheckOut.getContentPane().setLayout(null);
 		

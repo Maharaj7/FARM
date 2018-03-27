@@ -161,6 +161,16 @@ public void getStreams() {
 			}
 	  }
 	  
+	  public void sendFarmerList(ArrayList<Farmer> farmer)
+	  {
+		  try {
+				os.writeObject(farmer);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	  }
+	  
 
 	public void receiveResponse()
 	{
@@ -196,6 +206,19 @@ public void getStreams() {
 		try {
 			@SuppressWarnings("unchecked")
 			ArrayList<Crop> cr = (ArrayList<Crop>)is.readObject();
+			return cr;
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<Farmer> receiveFarmerData()
+	{
+		try {
+			@SuppressWarnings("unchecked")
+			ArrayList<Farmer> cr = (ArrayList<Farmer>)is.readObject();
 			return cr;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block

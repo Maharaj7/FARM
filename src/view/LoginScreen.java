@@ -22,6 +22,10 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
+/**
+ * @author Maharaj
+ *
+ */
 public class LoginScreen {
 
     private static byte[] pImage;
@@ -230,6 +234,9 @@ public class LoginScreen {
         
         JButton btnLoginAsFarmer = new JButton("Login as Farmer");
         btnLoginAsFarmer.addActionListener(new ActionListener() {
+        	/* (non-Javadoc)
+        	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+        	 */
         	/* (non-Javadoc)
         	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
         	 */

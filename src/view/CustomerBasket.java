@@ -37,7 +37,7 @@ public class CustomerBasket {
 	JFrame frmCustomerBasket;
     JTable table;
     CheckOut checkOut = new CheckOut();
-     static String email,itemName,quantity,cost;
+     String email,itemName,quantity,cost;
      
 	/**
 	 * Launch the application.
@@ -145,8 +145,8 @@ public class CustomerBasket {
 		 		 quantity = tmodel.getValueAt(index, 1).toString();
 		 		cost = tmodel.getValueAt(index, 2).toString();
 		 		 email = tmodel.getValueAt(index, 3).toString();
-		 		
-		 		
+		 		 
+		 		 
 			}
 		});
 		 Object[] columnNames = new Object[4];
@@ -155,7 +155,7 @@ public class CustomerBasket {
 		 columnNames[1] = "Quantity";
 		 columnNames[2] = "cost";
 		 columnNames[3] = "Email";
-		
+		  
 	
 		 model.setColumnIdentifiers(columnNames);
 		 
@@ -262,7 +262,18 @@ public class CustomerBasket {
 						Client_Farmer fam11 = new Client_Farmer();
 						 int quantity = list1.get(i).getQuantity() - list.get(count).getQuantity();
 						fam11.sendAction("Update Crop");
-						Crop crop = new Crop(list1.get(i).getEmail(),list1.get(i).getImage(),list1.get(i).getName(),list1.get(i).getWeight(),list1.get(i).getCostPerUnit(),list1.get(i).getAvailable(),quantity);
+						String available;
+						if(quantity >= 1)
+
+						{
+							available ="In Stock";
+						}
+						else{
+							available ="Not In Stock";
+						}
+						
+						
+						Crop crop = new Crop(list1.get(i).getEmail(),list1.get(i).getImage(),list1.get(i).getName(),list1.get(i).getWeight(),list1.get(i).getCostPerUnit(),available,quantity);
 						fam11.sendExactCropName(list1.get(i).getName());
 						fam11.sendExactEmail(list1.get(i).getEmail());
 						fam11.sendCrop(crop);
@@ -294,8 +305,6 @@ public class CustomerBasket {
 				{
 					JOptionPane.showMessageDialog(null, q.getMessage());
 				}
-				
-				
 				
 			}
 		});

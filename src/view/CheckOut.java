@@ -22,6 +22,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CheckOut {
 
@@ -40,6 +42,7 @@ public class CheckOut {
 	public ImageIcon pic;
 
     LoginScreen l = new LoginScreen();
+    private JTextField textField_5;
 	/**
 	 * Launch the application.
 	 */
@@ -109,18 +112,44 @@ public class CheckOut {
 		textField_3.setBounds(90, 177, 86, 20);
 		frame.getContentPane().add(textField_3);
 		
+		textField_5 = new JTextField("0");
+		textField_5.setBounds(243, 203, 86, 20);
+		frame.getContentPane().add(textField_5);
+		textField_5.setColumns(10);
+		textField_5.setVisible(false);
+		
 		textField.setEditable(false);
 		textField_1.setEditable(false);
 		textField_2.setEditable(false);
 		textField_3.setEditable(false);
 		
-		String list[]={"1","2","3","4","5","6","7","8","10","11","12"};
+		String list[]={"1","2","3","4","5","6","7","8","9","10"};
 		comboBox = new JComboBox<String>();
-		comboBox.setBounds(243, 203, 57, 20);
 		for(int i=0; i<list.length;i++)
 		{
 			comboBox.addItem(list[i]);	
 		}
+		comboBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				if(arg0.getSource().equals(comboBox.getSelectedItem().equals("10+")))
+				{
+					comboBox.setVisible(false);
+					textField_5.setVisible(true);
+					
+				}
+				if(Integer.parseInt(textField_5.getText()) <= 9)
+				{
+					comboBox.setVisible(true);
+					textField_5.setVisible(false);
+				}
+				
+			}
+		});
+		
+		comboBox.setBounds(243, 203, 57, 20);
+		
 		
 		frame.getContentPane().add(comboBox);
 		
@@ -141,8 +170,7 @@ public class CheckOut {
 					JOptionPane.showMessageDialog(null, "insufficient Quantity of Item ");
 				}
 				else{
-					
-					
+						
 					 
 					Client_Customer cus = new Client_Customer();
 					Basket basket = new Basket(email,l.getEmail(),textField.getText(),Integer.parseInt(textField_1.getText()),Float.parseFloat(textField_3.getText()),Float.parseFloat(textField_2.getText()));
@@ -170,6 +198,7 @@ public class CheckOut {
 		frame.getContentPane().add(textField_4);
 		
 		
+		
+		
 	}
-
 }
