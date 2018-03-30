@@ -4,21 +4,27 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import communication.Client_Customer;
 import model.Basket;
+import model.Crop;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class AlterBasket {
 
 	JFrame frame;
-	CustomerBasket cb = new CustomerBasket();
-
+	public String cropName, custEmail,famEmail;
+    public int quantity; 
+    public float weight,cost;
+    private JTextField textField;
+    LoginScreen l = new LoginScreen();
+ 
 	/**
 	 * Launch the application.
 	 */
@@ -52,34 +58,86 @@ public class AlterBasket {
 		JButton btnRemoveFromBasket = new JButton("Remove From Basket");
 		btnRemoveFromBasket.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			/*	Client_Customer cl = new Client_Customer();
-				cl.sendAction("Update Quantity");
-				Basket bas = new Basket();*/
-				String itemName = cb.itemName;
+
+				
 				 Client_Customer cus = new Client_Customer();
-				 cus.sendExactName(itemName);
+				 
 				 cus.sendAction("Remove basket item");
-		 		 
-		 		
+				  
+				 cus.sendExactName(cropName);
+				 
+				 
+				 
 		 		 cus.receiveResponse();
-				JOptionPane.showMessageDialog(null, "Crop Removed");
-				frame.dispose();
+				JOptionPane.showMessageDialog(null, cropName+" Removed");
+				 frame.dispose();
 			}
 		});
-		btnRemoveFromBasket.setBounds(64, 92, 240, 23);
+		btnRemoveFromBasket.setBounds(77, 92, 240, 23);
 		frame.getContentPane().add(btnRemoveFromBasket);
-		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(142, 36, 76, 20);
-		frame.getContentPane().add(comboBox);
 		
 		JLabel lblUpdateQuantity = new JLabel("Update Quantity");
 		lblUpdateQuantity.setBounds(142, 11, 89, 14);
 		frame.getContentPane().add(lblUpdateQuantity);
 		
 		JLabel lblOr = new JLabel("OR");
-		lblOr.setBounds(172, 67, 46, 14);
+		lblOr.setBounds(185, 67, 46, 14);
 		frame.getContentPane().add(lblOr);
-	}
+		
+		JButton btnNewButton = new JButton("Update");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Client_Customer fam1 = new Client_Customer();
+				fam1.sendAction("request all crops");
+				ArrayList<Crop> list1 = new ArrayList<Crop>();
+				
+				ArrayList<Crop> crops1 = new ArrayList<Crop>();
+			    fam1.sendCropList(crops1);
 
+				fam1.receiveResponse();
+				list1 = fam1.receiveCropData();
+				int actualQuantity = 0;
+				for(int i=0; i<list1.size(); i++)
+				{
+					if(list1.get(i).getName().compareToIgnoreCase(cropName)==0)
+					{
+						actualQuantity=list1.get(i).getQuantity();
+					}
+				}
+				
+				if(textField.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Please enter quantity!!");
+				}
+				else if(Integer.parseInt(textField.getText()) > actualQuantity)
+				{
+					JOptionPane.showMessageDialog(null, "insufficient Quantity of Item ");
+				}
+				else{
+					
+					Client_Customer cus = new Client_Customer();
+					cus.sendAction("Update Quantity");
+					
+					
+					Basket basket = new Basket(famEmail,custEmail,cropName,Integer.parseInt(textField.getText()),cost,weight);
+					
+					cus.sendExactName(cropName);
+					cus.sendBasket(basket);
+					cus.receiveResponse();
+	
+					JOptionPane.showMessageDialog(null, "Quantity Updated!");
+		               frame.dispose();
+				}
+				
+			}
+		});
+		btnNewButton.setBounds(195, 33, 122, 23);
+		frame.getContentPane().add(btnNewButton);
+		
+		textField = new JTextField();
+		textField.setBounds(77, 36, 97, 20);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+	}
 }

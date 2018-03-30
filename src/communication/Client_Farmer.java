@@ -8,10 +8,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import controller.Client_Controller;
+import model.Basket;
 import model.Crop;
 import model.Farmer;
 import view.CropsDesktop;
-import view.LoginScreen;
 
 public class Client_Farmer implements Serializable{
 
@@ -19,7 +20,7 @@ public class Client_Farmer implements Serializable{
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
 	private Socket connection;
-	LoginScreen l = new LoginScreen();
+	Client_Controller l = new Client_Controller();
 	CropsDesktop desk = new CropsDesktop();
 	
 	public Client_Farmer()
@@ -151,6 +152,26 @@ public void getStreams() {
 		}
 	}
 	
+	public void sendCustomerPurchase(Basket basket)
+	{
+		try {
+			os.writeObject(basket);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	  public void sendCustomerPurchaseList(ArrayList<Basket> basket)
+	  {
+		  try {
+				os.writeObject(basket);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	  }
+	
 	  public void sendCropList(ArrayList<Crop> crop)
 	  {
 		  try {
@@ -183,6 +204,18 @@ public void getStreams() {
 		}
 		
 		
+	}
+	
+	public boolean isLoginTrue()
+	{
+		try {
+			Boolean flag = (Boolean)is.readObject();
+			return flag;
+		} catch (ClassNotFoundException | IOException | ClassCastException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public Farmer receiveData()
@@ -219,6 +252,19 @@ public void getStreams() {
 		try {
 			@SuppressWarnings("unchecked")
 			ArrayList<Farmer> cr = (ArrayList<Farmer>)is.readObject();
+			return cr;
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<Basket> receiveCustomerPurchaseList()
+	{
+		try {
+			@SuppressWarnings("unchecked")
+			ArrayList<Basket> cr = (ArrayList<Basket>)is.readObject();
 			return cr;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block

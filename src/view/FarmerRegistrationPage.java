@@ -19,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -26,7 +28,7 @@ import java.awt.Font;
 public class FarmerRegistrationPage {
 
 
-    String fileName = null;
+    static String fileName = null;
     byte[] personImage = null;
     JFrame frmFarmersRegistrationPage_1;
     private JTextField emaiTextField;
@@ -64,7 +66,7 @@ public class FarmerRegistrationPage {
      */
     private void initialize() {
         frmFarmersRegistrationPage_1 = new JFrame();
-        frmFarmersRegistrationPage_1.setTitle("Farmer’s Registration Page");
+        frmFarmersRegistrationPage_1.setTitle("Farmerâ€™s Registration Page");
         frmFarmersRegistrationPage_1.setBounds(100, 100, 661, 528);
         frmFarmersRegistrationPage_1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frmFarmersRegistrationPage_1.getContentPane().setLayout(null);
@@ -72,7 +74,7 @@ public class FarmerRegistrationPage {
         JLabel lblFarmerReg = new JLabel("Farmer Registration Page");
         lblFarmerReg.setFont(new Font("Tahoma", Font.PLAIN, 22));
         lblFarmerReg.setIcon(null);
-        lblFarmerReg.setBounds(157, 24, 254, 29);
+        lblFarmerReg.setBounds(207, 23, 254, 29);
         frmFarmersRegistrationPage_1.getContentPane().add(lblFarmerReg);
         
         JLabel lblUploadImageOf = new JLabel("Select Image to Upload:");
@@ -181,8 +183,19 @@ public class FarmerRegistrationPage {
             	else if(Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())){
             		Client_Farmer cus = new Client_Farmer();
 					 cus.sendAction("Add Farmer");
+					 
+					 File source = new File(fileName);
+					 String path = "C:\\Users\\Maharaj\\git\\FARM\\src\\farmerImages"+"\\"+fNameTextField.getText()+".jpg";
+						File dest = new File(path);
+				         try{
+				        	 Files.copy(source.toPath(), dest.toPath());
+				         }
+				         catch(IOException e1)
+				         {
+				        	 e1.printStackTrace();
+				         }
 					
-					 Farmer farmer = new Farmer(fNameTextField.getText(),lNameTextField.getText(),emaiTextField.getText(),farmAddressTextField.getText(),passwordField.getText(),personImage,0.0f);
+					 Farmer farmer = new Farmer(fNameTextField.getText(),lNameTextField.getText(),emaiTextField.getText(),farmAddressTextField.getText(),passwordField.getText(),path,0.0f);
 					 cus.sendFarmer(farmer);
 		             cus.receiveResponse();
 		         
@@ -213,7 +226,7 @@ public class FarmerRegistrationPage {
         frmFarmersRegistrationPage_1.getContentPane().add(btnRegister);
         JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(FarmerRegistrationPage.class.getResource("/resources/farm2.jpg")));
-		label.setBounds(0, 0, 645, 506);
+		label.setBounds(0, 0, 660, 506);
 		frmFarmersRegistrationPage_1.getContentPane().add(label);
     }
     

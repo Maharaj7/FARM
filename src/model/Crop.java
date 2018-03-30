@@ -10,7 +10,7 @@ public class Crop implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String email;
-    private byte[] image;
+    private String imagePath;
     private String name;
     private float weight;
     private float costPerUnit;
@@ -28,11 +28,11 @@ public class Crop implements Serializable{
     	this.email = email;
     }
 
-	public Crop(String email, byte[] image, String name, float weight, float costPerUnit, String available,
+	public Crop(String email, String imagePath, String name, float weight, float costPerUnit, String available,
 			int quantity) {
 		super();
 		this.email = email;
-		this.image = image;
+		this.imagePath = imagePath;
 		this.name = name;
 		this.weight = weight;
 		this.costPerUnit = costPerUnit;
@@ -49,12 +49,12 @@ public class Crop implements Serializable{
 		this.email = email;
 	}
 
-	public byte[] getImage() {
-		return image;
+	public String getimagePath() {
+		return imagePath;
 	}
 
-	public void setImage(byte[] image) {
-		this.image = image;
+	public void setimagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	public String getName() {

@@ -14,10 +14,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 
+import controller.Client_Controller;
+
 import java.awt.Font;
-
-//import controller.SqlConnection;
-
 
 public class CustomerDashBoard {
 
@@ -51,7 +50,7 @@ public class CustomerDashBoard {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 739, 616);
+		frame.setBounds(100, 100, 739, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle("Customer DashBoard");
@@ -66,7 +65,7 @@ public class CustomerDashBoard {
 		});
 		addFundsbtn.setBackground(Color.WHITE);
 		addFundsbtn.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/addFunds.png")));
-		addFundsbtn.setBounds(51, 359, 161, 151);
+		addFundsbtn.setBounds(51, 368, 161, 151);
 		frame.getContentPane().add(addFundsbtn);
 		
 		JButton searchCropsBtn = new JButton("");
@@ -80,7 +79,7 @@ public class CustomerDashBoard {
 		searchCropsBtn.setToolTipText("Purchase crops here");
 		
 		searchCropsBtn.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/searchCrops.png")));
-		searchCropsBtn.setBounds(290, 359, 168, 151);
+		searchCropsBtn.setBounds(290, 368, 168, 151);
 		frame.getContentPane().add(searchCropsBtn);
 		
 		JButton myBasketBtn = new JButton("");
@@ -94,22 +93,22 @@ public class CustomerDashBoard {
 		
 		
 		myBasketBtn.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/myBasket.png")));
-		myBasketBtn.setBounds(523, 359, 154, 151);
+		myBasketBtn.setBounds(523, 368, 154, 151);
 		frame.getContentPane().add(myBasketBtn);
 		
 		JLabel lblAddFundsTo = new JLabel("Add Funds to Account");
 		lblAddFundsTo.setFont(new Font("Khmer MN", Font.PLAIN, 19));
-		lblAddFundsTo.setBounds(31, 526, 218, 29);
+		lblAddFundsTo.setBounds(31, 535, 218, 29);
 		frame.getContentPane().add(lblAddFundsTo);
 		
 		JLabel lblSearchCrops = new JLabel("Search Crops");
 		lblSearchCrops.setFont(new Font("Khmer MN", Font.PLAIN, 19));
-		lblSearchCrops.setBounds(323, 529, 135, 22);
+		lblSearchCrops.setBounds(323, 538, 135, 22);
 		frame.getContentPane().add(lblSearchCrops);
 		
 		JLabel lblMyBasket = new JLabel("My Basket");
 		lblMyBasket.setFont(new Font("Khmer MN", Font.PLAIN, 19));
-		lblMyBasket.setBounds(550, 529, 99, 23);
+		lblMyBasket.setBounds(550, 538, 99, 23);
 		frame.getContentPane().add(lblMyBasket);
 		
 		JLabel lblUserDetails = new JLabel("User Details");
@@ -124,7 +123,7 @@ public class CustomerDashBoard {
 		frame.getContentPane().add(separator);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(41, 325, 646, 12);
+		separator_1.setBounds(41, 334, 646, 12);
 		frame.getContentPane().add(separator_1);
 		
 		JLabel label = new JLabel("");
@@ -141,38 +140,54 @@ public class CustomerDashBoard {
 		frame.getContentPane().add(label);
 		
 		JLabel label_1 = new JLabel("");
-		label_1.setBounds(267, 125, 203, 156);
+		label_1.setBounds(267, 142, 203, 139);
 		frame.getContentPane().add(label_1);
 		
 		
-        LoginScreen ls = new LoginScreen();
+		Client_Controller ls = new Client_Controller();
 		
 		name = ls.getFname();
 		lname = ls.getLname();
 		 email1 = ls.getEmail();
-		 byte[] photo = ls.image();
+		 String photo = ls.image();
 		 
 		 ImageIcon imageIcon = new ImageIcon(new ImageIcon(photo).getImage().getScaledInstance(label_1.getWidth(),label_1.getHeight(),Image.SCALE_SMOOTH));
 			label_1.setIcon(imageIcon);
 			
 		
 		JLabel lblNewLabel = new JLabel(name+" "+lname);
-		lblNewLabel.setBounds(91, 300, 125, 14);
+		lblNewLabel.setForeground(new Color(255, 255, 255));
+		lblNewLabel.setFont(new Font("Gurmukhi Sangam MN", Font.PLAIN, 13));
+		lblNewLabel.setBounds(91, 308, 125, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel label_2 = new JLabel(email1);
-		label_2.setBounds(507, 300, 170, 23);
+		label_2.setForeground(new Color(255, 255, 255));
+		label_2.setFont(new Font("Gurmukhi Sangam MN", Font.PLAIN, 13));
+		label_2.setBounds(507, 300, 170, 22);
 		frame.getContentPane().add(label_2);
-
-		
-		JLabel label_3 = new JLabel("");
-		label_3.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/bckgrd1.jpg")));
-		label_3.setBounds(20, 21, 692, 554);
-		frame.getContentPane().add(label_3);
 		
 		JLabel label_4 = new JLabel("My DashBoard");
 		label_4.setFont(new Font("Herculanum", Font.BOLD, 22));
 		label_4.setBounds(266, 23, 192, 29);
 		frame.getContentPane().add(label_4);
+		
+		JLabel label_5 = new JLabel("Name");
+		label_5.setForeground(Color.WHITE);
+		label_5.setFont(new Font("Gurmukhi Sangam MN", Font.PLAIN, 14));
+		label_5.setBounds(91, 279, 68, 23);
+		frame.getContentPane().add(label_5);
+				
+				JLabel label_6 = new JLabel("Email Address");
+				label_6.setForeground(Color.WHITE);
+				label_6.setFont(new Font("Gurmukhi Sangam MN", Font.PLAIN, 14));
+				label_6.setBounds(542, 279, 93, 23);
+				frame.getContentPane().add(label_6);
+				
+						
+						JLabel label_3 = new JLabel("");
+						label_3.setIcon(new ImageIcon(CustomerDashBoard.class.getResource("/resources/bckgrd1.jpg")));
+						label_3.setBounds(20, 21, 692, 569);
+						frame.getContentPane().add(label_3);
 	}
 }

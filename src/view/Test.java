@@ -15,9 +15,6 @@ import communication.Client_Farmer;
 import model.Crop;
 
 import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Test {
 
@@ -51,7 +48,7 @@ public class Test {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 643, 395);
+		frame.setBounds(100, 100, 634, 395);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -77,7 +74,12 @@ public class Test {
 			DefaultTableModel model  = new DefaultTableModel();
 			
 			 table = new JTable(model){
-		        @SuppressWarnings({ "unchecked", "rawtypes" })
+		        /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@SuppressWarnings({ "unchecked", "rawtypes" })
 				@Override
 	            public Class getColumnClass(int column)
 	            {
@@ -104,9 +106,9 @@ public class Test {
 
 			  for(int i=0; i <list.size(); i++)
 			{
-				  if(list.get(i).getImage()	!= null)
+				  if(list.get(i).getimagePath()	!= null)
 				  {
-					  ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
+					  ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getimagePath()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
 					  row[5] = image; 
 				  }
 				  else{

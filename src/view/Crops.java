@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import communication.Client_Farmer;
+import controller.Client_Controller;
 import model.Crop;
 
 import javax.swing.JComboBox;
@@ -31,14 +32,14 @@ import javax.swing.JScrollPane;
 
 public class Crops {
     
-	String fileName = null;
+	static String fileName = null;
 	byte[] personImage = null;
 	JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	LoginScreen ls = new LoginScreen();
+	Client_Controller ls = new Client_Controller();
 
 	/**
 	 * Launch the application.
@@ -193,7 +194,7 @@ public class Crops {
 				 
 				
 				fam.sendAction("Add Crop");
-				Crop crop = new Crop(ls.getEmail(),personImage,textField.getText(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
+				Crop crop = new Crop(ls.getEmail(),fileName,textField.getText(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
 				fam.sendCrop(crop);
 				fam.receiveResponse();
 				
@@ -246,7 +247,7 @@ public class Crops {
 		  for(int i=0; i <list.size(); i++)
 		{
 			  row[0] = list.get(i).getEmail();
-			  row[1] = list.get(i).getImage();
+			  row[1] = list.get(i).getimagePath();
 			  row[2] = list.get(i).getName();
 			  row[3] = list.get(i).getWeight();
 			  row[4] = list.get(i).getCostPerUnit();

@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -26,9 +25,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import communication.Client_Customer;
-import communication.Client_Farmer;
 import model.Basket;
-import model.Crop;
+
 
 import javax.swing.JScrollPane;
 
@@ -36,8 +34,7 @@ public class CustomerBasket {
 
 	JFrame frmCustomerBasket;
     JTable table;
-    CheckOut checkOut = new CheckOut();
-     String email,itemName,quantity,cost;
+    AlterBasket ab = new AlterBasket();
      
 	/**
 	 * Launch the application.
@@ -69,31 +66,32 @@ public class CustomerBasket {
 	private void initialize() {
 		frmCustomerBasket = new JFrame();
 		frmCustomerBasket.setTitle("Customer Basket");
-		frmCustomerBasket.setBounds(100, 100, 668, 540);
+		frmCustomerBasket.setBounds(100, 100, 706, 540);
 		frmCustomerBasket.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCustomerBasket.getContentPane().setLayout(null);
 		
 		JLabel lblUnitPrice = new JLabel("Unit Price");
-		lblUnitPrice.setBounds(405, 81, 61, 16);
+		lblUnitPrice.setBounds(459, 81, 61, 16);
 		frmCustomerBasket.getContentPane().add(lblUnitPrice);
 		
 		JLabel lblQuantity = new JLabel("Quantity");
-		lblQuantity.setBounds(585, 81, 61, 16);
+		lblQuantity.setBounds(562, 81, 61, 16);
 		frmCustomerBasket.getContentPane().add(lblQuantity);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.GRAY);
-		separator.setBounds(18, 96, 628, 12);
+		separator.setBounds(18, 96, 652, 12);
 		frmCustomerBasket.getContentPane().add(separator);
 		
 		JLabel lblShoppingBasket = new JLabel("Shopping Basket");
+		lblShoppingBasket.setFont(new Font("Herculanum", Font.PLAIN, 20));
 		lblShoppingBasket.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/myBasket_sml.png")));
-		lblShoppingBasket.setBounds(256, 25, 131, 16);
+		lblShoppingBasket.setBounds(235, 25, 207, 28);
 		frmCustomerBasket.getContentPane().add(lblShoppingBasket);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(Color.GRAY);
-		separator_1.setBounds(18, 402, 628, 12);
+		separator_1.setBounds(18, 402, 652, 12);
 		frmCustomerBasket.getContentPane().add(separator_1);
 		
 		JLabel lblSubtotal = new JLabel("Subtotal:");
@@ -103,7 +101,8 @@ public class CustomerBasket {
 		
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(18, 107, 628, 284);
+		panel.setBorder(null);
+		panel.setBounds(28, 109, 628, 284);
 		
 		JPanel panel2 = new JPanel();
 		panel2.setBounds(10, 5, 608, 268);
@@ -112,13 +111,11 @@ public class CustomerBasket {
 		
 		Client_Customer  fam = new Client_Customer();
 		fam.sendAction("request customer basket");
-		fam.sendEmail();
 		ArrayList<Basket> list = new ArrayList<Basket>();
 		
 		ArrayList<Basket> crops = new ArrayList<Basket>();
 	    fam.sendBasketList(crops);
 
-		fam.receiveResponse();
 		list = fam.receiveBasketData();
 		
 		
@@ -126,11 +123,14 @@ public class CustomerBasket {
 		 * To go in Controller class
 		 * ***/
 		float totalCost=0.0f;
+	
 		for(int i=0; i<list.size(); i++)
 		{
-			totalCost = totalCost + list.get(i).getCost();
+			totalCost = totalCost + list.get(i).getCost()*list.get(i).getQuantity();
+			
 		}
 		
+
 		
 		DefaultTableModel model  = new DefaultTableModel();
 		table = new JTable(model);
@@ -139,36 +139,45 @@ public class CustomerBasket {
 			public void mouseClicked(MouseEvent e) {
 				int index = table.getSelectedRow();
 		 		TableModel tmodel = table.getModel();
-		 		AlterBasket ab = new AlterBasket();
+
+		 		String itemName = tmodel.getValueAt(index, 0).toString();
+		 		String quantity = tmodel.getValueAt(index, 5).toString();
+		 		String cost = tmodel.getValueAt(index, 4).toString();
+		 		String email = tmodel.getValueAt(index, 3).toString();
+		 		String Cemail = tmodel.getValueAt(index, 1).toString();
+		 		String weight = tmodel.getValueAt(index, 2).toString();
 		 		ab.frame.setVisible(true);
-		 		 itemName = tmodel.getValueAt(index, 0).toString();
-		 		 quantity = tmodel.getValueAt(index, 1).toString();
-		 		cost = tmodel.getValueAt(index, 2).toString();
-		 		 email = tmodel.getValueAt(index, 3).toString();
-		 		 
-		 		 
+		 		ab.cropName = itemName;
+		 		ab.quantity = Integer.parseInt(quantity);
+		 		ab.cost = Float.parseFloat(cost);
+		 		ab.weight = Float.parseFloat(weight);
+		 		ab.custEmail = Cemail;
+		 		ab.famEmail = email;
 			}
 		});
-		 Object[] columnNames = new Object[4];
+		 Object[] columnNames = new Object[6];
 		 
 		 columnNames[0]="Item Name";
-		 columnNames[1] = "Quantity";
-		 columnNames[2] = "cost";
-		 columnNames[3] = "Email";
+		 columnNames[5] = "Quantity";
+		 columnNames[4] = "cost";
+		 columnNames[3] = "Farmer Email";
+		 columnNames[1] = "Customer Email";
+		 columnNames[2] = "Weight";
 		  
 	
 		 model.setColumnIdentifiers(columnNames);
 		 
-		  Object[] row = new Object[4];
+		  Object[] row = new Object[6];
 
 		  for(int i=0; i <list.size(); i++)
 		{
 			  
 			  row[0] = list.get(i).getItemName();
-			  row[1] = list.get(i).getQuantity();
-			  row[2] = list.get(i).getCost();
+			  row[5] = list.get(i).getQuantity();
+			  row[4] = list.get(i).getCost();
 			  row[3] = list.get(i).getFarmerEmail();
-			  
+			  row[1] = list.get(i).getCustomerEmail();
+			  row[2] = list.get(i).getWeight();
 			  
 			   model.addRow(row); 
 			   
@@ -224,96 +233,24 @@ public class CustomerBasket {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				
-				
-				Client_Customer  fam = new Client_Customer();
-				fam.sendAction("request customer basket");
-				fam.sendEmail();
-				ArrayList<Basket> list = new ArrayList<Basket>();
-				
-				ArrayList<Basket> crops = new ArrayList<Basket>();
-			    fam.sendBasketList(crops);
-
-				fam.receiveResponse();
-				list = fam.receiveBasketData();
-				
-				Client_Customer fam1 = new Client_Customer();
-				fam1.sendAction("request all crops");
-				ArrayList<Crop> list1 = new ArrayList<Crop>();
-				
-				ArrayList<Crop> crops1 = new ArrayList<Crop>();
-			    fam1.sendCropList(crops1);
-
-				fam1.receiveResponse();
-				list1 = fam1.receiveCropData();
-			    
-				int size = list1.size();
-				int count =0;
-				try{
-				do{
-				
-				for(int i =0; i<list1.size();i++)
-				   {
-					  
-				    if(list1.get(i).getName().compareToIgnoreCase(list.get(count).getItemName())==0 && list1.get(i).getEmail().compareToIgnoreCase(list.get(count).getFarmerEmail())==0) 
-					{
-				    	/**
-						 * update crops data with changes to quantity after 
-						 * **/
-						Client_Farmer fam11 = new Client_Farmer();
-						 int quantity = list1.get(i).getQuantity() - list.get(count).getQuantity();
-						fam11.sendAction("Update Crop");
-						String available;
-						if(quantity >= 1)
-
-						{
-							available ="In Stock";
-						}
-						else{
-							available ="Not In Stock";
-						}
-						
-						
-						Crop crop = new Crop(list1.get(i).getEmail(),list1.get(i).getImage(),list1.get(i).getName(),list1.get(i).getWeight(),list1.get(i).getCostPerUnit(),available,quantity);
-						fam11.sendExactCropName(list1.get(i).getName());
-						fam11.sendExactEmail(list1.get(i).getEmail());
-						fam11.sendCrop(crop);
-						fam11.receiveResponse();
-				      count ++;
-				    	
-				     }
-				     else{
-				    	 System.out.println("not found"); 
-				     }	
-				           
-				   }
-				}while(count <= size);
-				    
-				Client_Customer cus = new Client_Customer();
-				cus.sendEmail();
-				cus.sendAction("Remove Basket Data");
-				JOptionPane.showMessageDialog(null, "Check out Completed");
-				}
-				catch(IndexOutOfBoundsException e1) //Currently causes an IndexOutOfBounds error but works just fine once caught. 
-				{
-					Client_Customer cus = new Client_Customer();
-					cus.sendEmail();
-					cus.sendAction("Remove Basket Data");
-					JOptionPane.showMessageDialog(null, "Check out Completed");
-					
-				}
-				catch(NullPointerException q)
-				{
-					JOptionPane.showMessageDialog(null, q.getMessage());
-				}
+				CheckoutPage window = new CheckoutPage();
+				window.frmCheckOut.setVisible(true);
+				frmCustomerBasket.dispose();
 				
 			}
 		});
 		label.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/checkoutBtn.png")));
-		label.setBounds(276, 437, 111, 35);
+		label.setBounds(300, 437, 111, 35);
 		frmCustomerBasket.getContentPane().add(label);
 		
 		JLabel label_1 = new JLabel(Float.toString(totalCost));
 		label_1.setBounds(562, 415, 46, 14);
 		frmCustomerBasket.getContentPane().add(label_1);
+		
+		JLabel label_2 = new JLabel("");
+		label_2.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/basketBkg.jpg")));
+		label_2.setBounds(0, 0, 706, 489);
+		frmCustomerBasket.getContentPane().add(label_2);
 	}
+	
 }

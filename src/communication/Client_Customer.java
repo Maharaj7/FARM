@@ -8,10 +8,10 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import controller.Client_Controller;
 import model.Basket;
 import model.Crop;
 import model.Customer;
-import view.LoginScreen;
 
 public class Client_Customer implements Serializable{
 
@@ -19,7 +19,7 @@ public class Client_Customer implements Serializable{
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
 	private Socket connection;
-	LoginScreen l = new LoginScreen();
+	Client_Controller l = new Client_Controller();
 	
 	public Client_Customer()
 	{
@@ -49,6 +49,18 @@ public class Client_Customer implements Serializable{
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public boolean isLoginTrue()
+	{
+		try {
+			Boolean flag = (Boolean)is.readObject();
+			return flag;
+		} catch (ClassNotFoundException | IOException | ClassCastException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public void closeConnection()
@@ -98,15 +110,19 @@ public class Client_Customer implements Serializable{
 	
 	public void receiveResponse()
 	{
+		
 		try {
 			@SuppressWarnings("unused")
 			Boolean flag = (Boolean)is.readObject();
-		 
+			
 		} catch (ClassNotFoundException | IOException | ClassCastException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
+	
+	
 	
 	public void sendEmail()
 	{
@@ -153,6 +169,7 @@ public class Client_Customer implements Serializable{
 		return null;
 	}
  
+	
 	  public void sendBasketList(ArrayList<Basket> basket)
 	  {
 		  try {

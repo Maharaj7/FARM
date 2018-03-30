@@ -11,16 +11,24 @@ import javax.swing.JButton;
 import javax.swing.JSeparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 
+import communication.Client_Farmer;
+import controller.Client_Controller;
+import model.Basket;
+
+import java.awt.SystemColor;
+
 public class FarmerDashBoard {
 
-    JFrame frmFarmerDashboard;
+    public JFrame frmFarmerDashboard;
     String name,lname,email1;
     float earnings;
+    Client_Controller ls = new Client_Controller();
     /**
      * Launch the application.
      */
@@ -50,7 +58,7 @@ public class FarmerDashBoard {
     private void initialize() {
         frmFarmerDashboard = new JFrame();
         frmFarmerDashboard.setTitle("Farmer DashBoard");
-        frmFarmerDashboard.setBounds(100, 100, 768, 671);
+        frmFarmerDashboard.setBounds(100, 100, 772, 703);
         frmFarmerDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frmFarmerDashboard.getContentPane().setLayout(null);
         
@@ -63,27 +71,28 @@ public class FarmerDashBoard {
             }
         });
         button_1.setIcon(new ImageIcon(FarmerDashBoard.class.getResource("/resources/crops.jpg")));
-        button_1.setBounds(48, 419, 173, 131);
+        button_1.setBounds(48, 461, 173, 131);
         frmFarmerDashboard.getContentPane().add(button_1);
         
         JLabel lblViewAllMy = new JLabel("View All my Customers");
         lblViewAllMy.setFont(new Font("Khmer MN", Font.PLAIN, 19));
-        lblViewAllMy.setBounds(285, 562, 220, 35);
+        lblViewAllMy.setBounds(285, 604, 179, 35);
         frmFarmerDashboard.getContentPane().add(lblViewAllMy);
         
         JButton viewAllCustomersBtn = new JButton("");
         viewAllCustomersBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		
-        		
+        		frmFarmerDashboard.dispose();
+        		CustomerList window = new CustomerList();
+				window.frame.setVisible(true);
         	}
         });
         viewAllCustomersBtn.setIcon(new ImageIcon(FarmerDashBoard.class.getResource("/resources/veiwAllCustomers.png")));
-        viewAllCustomersBtn.setBounds(307, 419, 145, 131);
+        viewAllCustomersBtn.setBounds(307, 461, 145, 131);
         frmFarmerDashboard.getContentPane().add(viewAllCustomersBtn);
         
         JSeparator separator = new JSeparator();
-        separator.setBounds(48, 333, 669, 12);
+        separator.setBounds(48, 392, 669, 12);
         frmFarmerDashboard.getContentPane().add(separator);
         
         JLabel userDetailsLbl = new JLabel("User Details");
@@ -94,7 +103,7 @@ public class FarmerDashBoard {
         frmFarmerDashboard.getContentPane().add(userDetailsLbl);
         
         JSeparator separator_1 = new JSeparator();
-        separator_1.setBounds(46, 118, 646, 12);
+        separator_1.setBounds(46, 118, 671, 12);
         frmFarmerDashboard.getContentPane().add(separator_1);
         
         JLabel myDashboardLbl = new JLabel("My DashBoard");
@@ -117,62 +126,87 @@ public class FarmerDashBoard {
         
         JLabel lblLiveChat = new JLabel("Live Chat");
         lblLiveChat.setFont(new Font("Khmer MN", Font.PLAIN, 19));
-        lblLiveChat.setBounds(598, 568, 94, 23);
+        lblLiveChat.setBounds(598, 610, 94, 23);
         frmFarmerDashboard.getContentPane().add(lblLiveChat);
         
         JButton button = new JButton("");
         button.setIcon(new ImageIcon(FarmerDashBoard.class.getResource("/resources/LiveChatImg.png")));
-        button.setBounds(558, 410, 145, 140);
+        button.setBounds(558, 452, 145, 140);
         frmFarmerDashboard.getContentPane().add(button);
         
         JLabel lblCrops = new JLabel("Crops");
         lblCrops.setHorizontalAlignment(SwingConstants.CENTER);
         lblCrops.setFont(new Font("Khmer MN", Font.PLAIN, 19));
-        lblCrops.setBounds(93, 562, 83, 35);
+        lblCrops.setBounds(93, 604, 83, 35);
         frmFarmerDashboard.getContentPane().add(lblCrops);
 			
         JLabel label_1 = new JLabel("");
-        label_1.setBounds(301, 141, 163, 140);
+        label_1.setBounds(273, 150, 216, 148);
         frmFarmerDashboard.getContentPane().add(label_1);
-        LoginScreen ls = new LoginScreen();
+       
 		
 		name = ls.getFname();
 		lname = ls.getLname();
 		 email1 = ls.getEmail();
-		 byte[] photo = ls.image();
+		 String photo = ls.image();
 		 earnings = ls.getEarnings();
 		 
 		ImageIcon imageIcon = new ImageIcon(new ImageIcon(photo).getImage().getScaledInstance(label_1.getWidth(),label_1.getHeight(),Image.SCALE_SMOOTH));
 	    label_1.setIcon(imageIcon);
 	    
 	    JLabel namelbl = new JLabel(name+" "+lname);
-	    namelbl.setBounds(48, 308, 128, 14);
+	    namelbl.setForeground(SystemColor.activeCaption);
+	    namelbl.setBounds(66, 356, 153, 14);
 	    frmFarmerDashboard.getContentPane().add(namelbl);
 	    
 	    JLabel emaillbl = new JLabel(email1);
-	    emaillbl.setBounds(598, 308, 107, 14);
+	    emaillbl.setForeground(SystemColor.activeCaption);
+	    emaillbl.setBounds(579, 356, 131, 14);
 	    frmFarmerDashboard.getContentPane().add(emaillbl);
 	    
-	    JLabel earninglbl = new JLabel(String.valueOf(earnings));
-	    earninglbl.setBounds(370, 308, 46, 14);
+	    Client_Farmer farmer = new Client_Farmer();
+		farmer.sendAction("request customerPurchaseList");
+		farmer.sendEmail();
+		ArrayList<Basket> list = new ArrayList<Basket>();
+		ArrayList<Basket> bas = new ArrayList<Basket>();
+		farmer.sendCustomerPurchaseList(bas);
+		farmer.receiveResponse();
+		list = farmer.receiveCustomerPurchaseList();
+		
+		float totalCost=0.0f;
+		for(int i=0; i<list.size(); i++)
+		{
+			totalCost = totalCost + list.get(i).getCost();
+			
+		}
+	    
+	    JLabel earninglbl = new JLabel(String.valueOf(totalCost));
+	    earninglbl.setForeground(SystemColor.activeCaption);
+	    earninglbl.setBounds(371, 356, 91, 14);
 	    frmFarmerDashboard.getContentPane().add(earninglbl);
 	    
 	    JLabel lblName = new JLabel("Name");
-	    lblName.setBounds(48, 283, 68, 14);
+	    lblName.setForeground(SystemColor.activeCaption);
+	    lblName.setFont(new Font("Gurmukhi Sangam MN", Font.PLAIN, 14));
+	    lblName.setBounds(66, 322, 68, 23);
 	    frmFarmerDashboard.getContentPane().add(lblName);
 	    
-	    JLabel lblEarnings = new JLabel("Earnings");
-	    lblEarnings.setBounds(370, 283, 82, 14);
+	    JLabel lblEarnings = new JLabel("Total Earnings");
+	    lblEarnings.setForeground(SystemColor.activeCaption);
+	    lblEarnings.setFont(new Font("Gurmukhi Sangam MN", Font.PLAIN, 14));
+	    lblEarnings.setBounds(346, 322, 119, 23);
 	    frmFarmerDashboard.getContentPane().add(lblEarnings);
 	    
 	    JLabel lblEmailAddress = new JLabel("Email Address");
-	    lblEmailAddress.setBounds(610, 283, 93, 14);
+	    lblEmailAddress.setForeground(SystemColor.activeCaption);
+	    lblEmailAddress.setFont(new Font("Gurmukhi Sangam MN", Font.PLAIN, 14));
+	    lblEmailAddress.setBounds(608, 322, 93, 23);
 	    frmFarmerDashboard.getContentPane().add(lblEmailAddress);
 	    
 	    
 	    JLabel label = new JLabel("");
 	    label.setIcon(new ImageIcon(FarmerDashBoard.class.getResource("/resources/bckgrd2.png")));
-	    label.setBounds(0, 0, 752, 490);
+	    label.setBounds(0, 79, 772, 448);
 	    frmFarmerDashboard.getContentPane().add(label);
         
     }

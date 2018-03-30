@@ -11,6 +11,8 @@ public class Basket implements Serializable{
 	private String farmerEmail;
 	private String customerEmail;
 	private String itemName;
+	private String cName;
+	private String location;
 	private int quantity;
 	private float cost;
 	private float weight;
@@ -32,7 +34,15 @@ public class Basket implements Serializable{
 		this.weight = weight;
 	}
 
-
+	public Basket(String farmerEmail, String customerEmail, String cName, String location, float cost) {
+		super();
+		this.farmerEmail = farmerEmail;
+		this.customerEmail = customerEmail;
+		this.cName = cName;
+		this.location = location;
+		this.cost = cost;
+	}
+	
 	public String getFarmerEmail() {
 		return farmerEmail;
 	}
@@ -93,6 +103,26 @@ public class Basket implements Serializable{
 	}
 
 
+	public String getcName() {
+		return cName;
+	}
+
+
+	public void setcName(String cName) {
+		this.cName = cName;
+	}
+
+
+	public String getLocation() {
+		return location;
+	}
+
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+    
 	
 	
 }

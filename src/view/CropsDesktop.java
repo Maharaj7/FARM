@@ -21,6 +21,8 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
@@ -31,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import communication.Client_Farmer;
+import controller.Client_Controller;
 import model.Crop;
 
 
@@ -43,7 +46,7 @@ import javax.swing.JTable;
 
 public class CropsDesktop {
 
-	String fileName;
+	static String fileName;
 	byte[] personImage;
 	byte[] cropImage;
 	JFrame frmCropsDesktop;
@@ -53,7 +56,7 @@ public class CropsDesktop {
 	private JTextField textField_3;
 	private JScrollPane scrollPane;
 	private JTable table;
-	private LoginScreen ls = new LoginScreen();
+	private Client_Controller ls = new Client_Controller();
 	private static String cropName;
 	UpdateCrop updateCrops = new UpdateCrop();
 	static boolean show=true;
@@ -108,7 +111,8 @@ public class CropsDesktop {
 		JMenu mnMenu = new JMenu("Crops Menu");
 		mnMenu.setFont(new Font("KufiStandardGK", Font.PLAIN, 18));
 		menuBar.add(mnMenu);
-
+                
+                
 		JMenuItem mntmAddCrops = new JMenuItem("Add Crops"); //MItem one
 		mntmAddCrops.setFont(new Font("Khmer MN", Font.PLAIN, 17));
 		mntmAddCrops.addMouseListener(new MouseAdapter() {
@@ -234,7 +238,7 @@ public class CropsDesktop {
 
 							Client_Farmer fam = new Client_Farmer();
 							fam.sendAction("request crops");
-							fam.sendEmail(); // sends person email to the server in order to query specific data
+							fam.sendExactEmail(ls.getEmail());; // sends person email to the server in order to query specific data
 							ArrayList<Crop> list = new ArrayList<Crop>();
 
 							ArrayList<Crop> crops = new ArrayList<Crop>();
@@ -248,8 +252,6 @@ public class CropsDesktop {
 							{
 								if(list.get(i).getName().compareToIgnoreCase(textField.getText())==0)
 								{
-									System.out.println("Name is "+list.get(i).getName()+" "+"next name is "+textField.getText());
-
 									found =1;
 									break;
 								}
@@ -269,10 +271,7 @@ public class CropsDesktop {
 								{
 									JOptionPane.showMessageDialog(null, "Please Upload an Image");
 								}
-								//								if(Integer.parseInt(textField.getText()) >=1)
-								//								{
-								//									JOptionPane.showMessageDialog(null, "Crop name cannot be a number,", " Error message", JOptionPane.ERROR_MESSAGE);
-								//								}
+							
 								else{
 									try{
 										String selection;
@@ -287,9 +286,22 @@ public class CropsDesktop {
 
 										Client_Farmer fam1 = new Client_Farmer();
 
-
+                   
 										fam1.sendAction("Add Crop");
-										Crop crop = new Crop(ls.getEmail(),personImage,textField.getText(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
+										
+										 File source = new File(fileName);
+										 String path = "C:\\Users\\Maharaj\\git\\FARM\\src\\cropImages"+"\\"+textField.getText()+".jpg";
+											File dest = new File(path);
+									         try{
+									        	 Files.copy(source.toPath(), dest.toPath());
+									         }
+									         catch(IOException e1)
+									         {
+									        	 e1.printStackTrace();
+									         }
+										
+										
+										Crop crop = new Crop(ls.getEmail(),path,textField.getText(),Float.parseFloat(textField_1.getText()),Float.parseFloat(textField_2.getText()),selection,Integer.parseInt(textField_3.getText()));
 										fam1.sendCrop(crop);
 										fam1.receiveResponse();
 
@@ -314,6 +326,8 @@ public class CropsDesktop {
 								}
 
 							}
+							//cropsData.addCrops(textField.getText(),textField_1.getText(),textField_2.getText(),textField_2.getText(),selection,textField, textField_1, textField_2, textField_3, imagLabel, personImage, fileName);
+							
 						}
 					});
 					btnAddCrop.setBounds(81, 333, 117, 29);
@@ -331,10 +345,10 @@ public class CropsDesktop {
 						public void internalFrameClosing(InternalFrameEvent e) {
 							flag = 0; 
 						}
-					});
+					});}
 
 				}
-			}
+			
 		}); //end of MItem one 
 
 		mntmAddCrops.setIcon(new ImageIcon(CropsDesktop.class.getResource("/resources/addCrop.png")));
@@ -344,7 +358,6 @@ public class CropsDesktop {
 		mntmViewAllCrops.setFont(new Font("Khmer MN", Font.PLAIN, 17));
 		mntmViewAllCrops.addMouseListener(new MouseAdapter() {
 			int flag = 0;
-			@SuppressWarnings("serial")
 			@Override
 			public void mouseReleased(MouseEvent e) {
 
@@ -452,17 +465,18 @@ public class CropsDesktop {
 								int index = table.getSelectedRow();
 								TableModel tmodel = table.getModel();
 								ImageIcon image;
-							//	image = (ImageIcon) tmodel.getValueAt(index, 6);
-								//updateCrops.Image.setIcon(image);
+								image = (ImageIcon) tmodel.getValueAt(index, 6);
+								updateCrops.iImage.setIcon(image);
 
 
 								String name = tmodel.getValueAt(index, 0).toString();
 								String quantity = tmodel.getValueAt(index, 4).toString();
 								String weight = tmodel.getValueAt(index, 1).toString();
 								String cost = tmodel.getValueAt(index, 2).toString();
+								@SuppressWarnings("unused")
 								String ava = tmodel.getValueAt(index, 3).toString();
 								String email = tmodel.getValueAt(index, 5).toString();
-								updateCrops.frame.setVisible(true);
+								updateCrops.frmCropUpdate.setVisible(true);
 								updateCrops.textField.setText(name);
 								updateCrops.textField_2.setText(quantity);
 								updateCrops.textField_3.setText(weight);
@@ -488,9 +502,9 @@ public class CropsDesktop {
 
 						for(int i=0; i <list.size(); i++)
 						{
-							if(list.get(i).getImage()	!= null)
+							if(list.get(i).getimagePath()	!= null)
 							{
-								ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
+								ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getimagePath()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
 								row[6] = image; 
 							}
 							else{
@@ -555,6 +569,7 @@ public class CropsDesktop {
 	}
 
 
+	@SuppressWarnings("serial")
 	private void showTable1(JInternalFrame frame) 
 	{
 		Client_Farmer fam = new Client_Farmer();
@@ -587,9 +602,9 @@ public class CropsDesktop {
 
 			for(int i=0; i <list.size(); i++)
 			{
-				if(list.get(i).getImage()	!= null)
+				if(list.get(i).getimagePath()	!= null)
 				{
-					ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
+					ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getimagePath()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
 					row[0] = image; 
 				}
 				else{
@@ -635,6 +650,7 @@ public class CropsDesktop {
 	}
 	
 
+	@SuppressWarnings("serial")
 	private void showTable(JInternalFrame frame) 
 	{
 		Client_Farmer fam = new Client_Farmer();
@@ -667,9 +683,9 @@ public class CropsDesktop {
  
 		for(int i=0; i <list.size(); i++)
 		{
-			if(list.get(i).getImage()	!= null)
+			if(list.get(i).getimagePath()	!= null)
 			{
-				ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
+				ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getimagePath()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
 				row[0] = image; 
 			}
 			else{

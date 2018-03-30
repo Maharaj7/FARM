@@ -7,7 +7,7 @@ public class Customer implements java.io.Serializable{
 	private String fName;
 	private String lName;
 	private String email;
-	private byte[] photo;
+	private String photoPath;
 	private String password;
 	private float funds;
 	
@@ -19,12 +19,12 @@ public class Customer implements java.io.Serializable{
 	
 	
 
-	public Customer(String fName, String lName, String email, byte[] photo, String password, float funds) {
+	public Customer(String fName, String lName, String email, String photoPath, String password, float funds) {
 		super();
 		this.fName = fName;
 		this.lName = lName;
 		this.email = email;
-		this.photo = photo;
+		this.photoPath = photoPath;
 		this.password = password;
 		this.funds = funds;
 	}
@@ -40,7 +40,7 @@ public class Customer implements java.io.Serializable{
 		
 	}
 
-
+ 
 
 	public String getfName() {
 		return fName;
@@ -84,15 +84,15 @@ public class Customer implements java.io.Serializable{
 
 
 
-	public byte[] getPhoto() {
-		return photo;
+	public String getphotoPath() {
+		return photoPath;
 	}
 
 
 
 
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
+	public void setphotoPath(String photoPath) {
+		this.photoPath = photoPath;
 	}
 
 

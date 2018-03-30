@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.awt.Color;
+import javax.swing.UIManager;
 
 public class SearchCrops {
 
@@ -66,15 +68,18 @@ public class SearchCrops {
 	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 845, 489);
+		frame.getContentPane().setBackground(UIManager.getColor("Desktop.background"));
+		frame.setBounds(100, 100, 837, 514);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(new Color(255, 105, 180));
 		tabbedPane.setBounds(0, 0, 829, 454);
 		frame.getContentPane().add(tabbedPane);
 		JPanel panel2 = new JPanel();
-		panel2.setBounds(10, 5, 804, 402);
+		panel2.setBorder(null);
+		panel2.setBounds(0, 0, 808, 418);
 		panel2.setLayout(null);
 		
 		
@@ -126,10 +131,10 @@ public class SearchCrops {
 			 		String ava = tmodel.getValueAt(index, 3).toString();
 			 		String email = tmodel.getValueAt(index, 5).toString();
 			 		checkOut.frame.setVisible(true);
-			 		checkOut.textField.setText(name);
-			 		checkOut.textField_1.setText(quantity);
-			 		checkOut.textField_2.setText(weight);
-			 		checkOut.textField_3.setText(cost);
+			 		checkOut.name.setText(name);
+			 		checkOut.quantity.setText(quantity);
+			 		checkOut.weight.setText(weight);
+			 		checkOut.cost.setText(cost);
 			 		checkOut.textField_4.setText(ava);
 			 		checkOut.email = email;
 			 		
@@ -154,9 +159,9 @@ public class SearchCrops {
 
 			  for(int i=0; i <list.size(); i++)
 			{
-				  if(list.get(i).getImage()	!= null)
+				  if(list.get(i).getimagePath()	!= null)
 				  {
-					  ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
+					  ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getimagePath()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
 					  row[6] = image; 
 				  }
 				  else{
@@ -183,8 +188,9 @@ public class SearchCrops {
 			panel2.add(scrollPane,BorderLayout.CENTER);
 			
 		JPanel panel = new JPanel();
+		panel.setBorder(null);
 		panel.setLayout(null);
-		panel.add(panel2);
+		panel.add(panel2); // why add a panel in another panel?
 		tabbedPane.addTab("View All Crops", null, panel, null);
 		
 		JPanel panel_1 = new JPanel();
@@ -206,7 +212,7 @@ public class SearchCrops {
 			{
 				comboBox.addItem(list1.get(i).getEmail());
 			}
-		comboBox.setBounds(281, 12, 133, 20);
+		comboBox.setBounds(344, 12, 133, 20);
 		panel_1.add(comboBox);
 		JPanel panel_2 = new JPanel();
 		JButton btnGenerate = new JButton("Generate");
@@ -260,10 +266,10 @@ public class SearchCrops {
 				 		String ava = tmodel.getValueAt(index, 3).toString();
 				 		String email = tmodel.getValueAt(index, 5).toString();
 				 		checkOut1.frame.setVisible(true);
-				 		checkOut1.textField.setText(name);
-				 		checkOut1.textField_1.setText(quantity);
-				 		checkOut1.textField_2.setText(weight);
-				 		checkOut1.textField_3.setText(cost);
+				 		checkOut1.name.setText(name);
+						checkOut1.quantity.setText(quantity);
+				 		checkOut1.weight.setText(weight);
+				 		checkOut1.cost.setText(cost);
 				 		checkOut1.textField_4.setText(ava);
 				 		checkOut1.email = email;
 				 		
@@ -288,9 +294,9 @@ public class SearchCrops {
 
 				  for(int i=0; i <list.size(); i++)
 				{
-					  if(list.get(i).getImage()	!= null)
+					  if(list.get(i).getimagePath()	!= null)
 					  {
-						  ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getImage()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
+						  ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getimagePath()).getImage().getScaledInstance(190,160,Image.SCALE_SMOOTH));
 						  row[6] = image; 
 					  }
 					  else{
@@ -316,20 +322,23 @@ public class SearchCrops {
 					
 			}
 		});
-		btnGenerate.setBounds(424, 11, 89, 23);
+		btnGenerate.setBounds(487, 11, 89, 23);
 		panel_1.add(btnGenerate);
 		
 		
 		
 		
-		panel_2.setBounds(10, 43, 804, 358);
+		panel_2.setBounds(6, 44, 792, 358);
 		panel_1.add(panel_2);
 		
 		JLabel lblSelectFarmer = new JLabel("Select Farmer:");
+		lblSelectFarmer.setIcon(new ImageIcon(SearchCrops.class.getResource("/resources/viewByFarmersPic.png")));
 		lblSelectFarmer.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSelectFarmer.setBounds(162, 15, 109, 14);
+		lblSelectFarmer.setBounds(209, 5, 133, 31);
 		panel_1.add(lblSelectFarmer);
+		
 		JMenuBar menuBar = new JMenuBar();
+		
 		JButton btnMyDashboard = new JButton("My DashBoard");
 		btnMyDashboard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -342,5 +351,17 @@ public class SearchCrops {
 		btnMyDashboard.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		btnMyDashboard.setIcon(new ImageIcon(CustomerBasket.class.getResource("/resources/backIcon.png")));
 		menuBar.add(btnMyDashboard);
+		
+		JButton button = new JButton("My Basket");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				CustomerBasket window = new CustomerBasket();
+				window.frmCustomerBasket.setVisible(true);
+			}
+		});
+		button.setIcon(new ImageIcon(SearchCrops.class.getResource("/resources/myBasket_sml.png")));
+		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
+		menuBar.add(button);
 	}
 }
