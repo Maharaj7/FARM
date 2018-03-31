@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-
+import java.nio.file.StandardCopyOption;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -41,6 +41,7 @@ public class UpdateCrop {
 	public JTextField textField_4;
     public JLabel iImage;
     public String email;
+    public String iPath;
 	/**
 	 * Launch the application.
 	 */
@@ -186,14 +187,17 @@ public class UpdateCrop {
 			public void actionPerformed(ActionEvent arg0) {
 			
 				{
+					String path;
 					Client_Farmer fam11 = new Client_Farmer();
 					fam11.sendAction("Update Crop");
-					
+					fam11.sendExactCropName(textField.getText());
+					fam11.sendExactEmail(email);
+					path = iPath;
 					 File source = new File(fileName);
-					 String path = "C:\\Users\\Maharaj\\git\\FARM\\src\\cropImages"+"\\"+textField.getText()+".jpg";
+					 path = "C:\\Users\\Maharaj\\git\\FARM\\src\\cropImages"+"\\"+textField.getText()+".jpg";
 						File dest = new File(path);
 				         try{
-				        	 Files.copy(source.toPath(), dest.toPath());
+				        	 Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				         }
 				         catch(IOException e1)
 				         {
@@ -209,11 +213,12 @@ public class UpdateCrop {
 					else{
 						ava = "Not in Stock"	;
 					}
+					
+					Client_Farmer fam = new Client_Farmer();
+					fam.sendAction("Add Crop");
 					Crop crop = new Crop(email,path,textField.getText(),Float.parseFloat(textField_3.getText()),Float.parseFloat(textField_4.getText()),ava,Integer.parseInt(textField_2.getText()));
-					fam11.sendExactCropName(textField.getText());
-					fam11.sendExactEmail(email);
-					fam11.sendCrop(crop);
-					fam11.receiveResponse();
+					fam.sendCrop(crop);
+					fam.receiveResponse();
 					
 					JOptionPane.showMessageDialog(null, "Crop Updated");
 					frmCropUpdate.dispose();

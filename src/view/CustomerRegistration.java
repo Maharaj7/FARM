@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -193,7 +194,7 @@ public class CustomerRegistration {
 					 String path = "C:\\Users\\Maharaj\\git\\FARM\\src\\customerImages"+"\\"+textField_1.getText()+".jpg";
 						File dest = new File(path);
 				         try{
-				        	 Files.copy(source.toPath(), dest.toPath());
+				        	 Files.copy(source.toPath(), dest.toPath(),StandardCopyOption.REPLACE_EXISTING);
 				         }
 				         catch(IOException e1)
 				         {

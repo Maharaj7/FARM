@@ -218,7 +218,7 @@ public class SearchCrops {
 		JButton btnGenerate = new JButton("Generate");
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				try{
 				Client_Farmer fam = new Client_Farmer();
 				fam.sendAction("request crops");
 				fam.sendExactEmail(comboBox.getSelectedItem().toString());
@@ -321,6 +321,10 @@ public class SearchCrops {
 					panel_2.add(scrollPane,BorderLayout.CENTER);
 					
 			}
+				catch(ArrayIndexOutOfBoundsException q)
+				{
+					}
+				}
 		});
 		btnGenerate.setBounds(487, 11, 89, 23);
 		panel_1.add(btnGenerate);

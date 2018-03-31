@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import communication.Client_Customer;
+import controller.Client_Controller;
 import model.Basket;
 
 
@@ -34,6 +35,7 @@ public class CustomerBasket {
 
 	JFrame frmCustomerBasket;
     JTable table;
+    Client_Controller l = new Client_Controller();
     AlterBasket ab = new AlterBasket();
      
 	/**
@@ -110,9 +112,9 @@ public class CustomerBasket {
 		
 		
 		Client_Customer  fam = new Client_Customer();
-		fam.sendAction("request customer basket");
+		fam.sendAction("request specific customer basket");
 		ArrayList<Basket> list = new ArrayList<Basket>();
-		
+		fam.sendExactEmail(l.getEmail());
 		ArrayList<Basket> crops = new ArrayList<Basket>();
 	    fam.sendBasketList(crops);
 

@@ -46,6 +46,8 @@ public class Client_Controller {
 			fname = data.getfName();
 			lname = data.getlName();
 			pImage = data.getphotoPath();
+			earnings = data.getFunds();
+			
 			frame.dispose();
 
 			CustomerDashBoard window = new CustomerDashBoard();
@@ -172,6 +174,8 @@ public class Client_Controller {
 			frame.dispose();
 		}
 	}
+	
+	
 	
 	public String image() {
 		return pImage;

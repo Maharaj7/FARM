@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -15,18 +16,10 @@ import model.Crop;
 public class Crops_DataHandler {
 	private Client_Controller ls = new Client_Controller();
 
-	public void addCrops(String name,String weight,String costper,String available, String quantity, JTextField textField,JTextField textField_1,JTextField textField_2,JTextField textField_3,JLabel imagLabel,byte[] personImage,String fileName)
+	public void addCrops(String name,String weight,String costper, String quantity, JTextField textField,JTextField textField_1,JTextField textField_2,JTextField textField_3,JLabel imagLabel,byte[] personImage,String fileName)
 	{
-		Client_Farmer fam = new Client_Farmer();
-		fam.sendAction("request crops");
-		fam.sendExactEmail(ls.getEmail());; // sends person email to the server in order to query specific data
 		ArrayList<Crop> list = new ArrayList<Crop>();
-
-		ArrayList<Crop> crops = new ArrayList<Crop>();
-		fam.sendCropList(crops);
-
-		fam.receiveResponse();
-		list = fam.receiveCropData();
+		list = requestCrops();
 
 		int found =0;
 		for(int i =0; i<list.size();i++)
@@ -45,7 +38,7 @@ public class Crops_DataHandler {
 		}
 		else{
 			if( name.isEmpty() || weight.isEmpty() || quantity.isEmpty()
-					|| available.isEmpty() )
+					|| textField_3.getText().isEmpty() )
 			{
 				JOptionPane.showMessageDialog(null, "Fields cannot be left empty");
 			}if (personImage == null)
@@ -74,7 +67,7 @@ public class Crops_DataHandler {
 					 String path = "C:\\Users\\Maharaj\\git\\FARM\\src\\cropImages"+"\\"+name+".jpg";
 						File dest = new File(path);
 				         try{
-				        	 Files.copy(source.toPath(), dest.toPath());
+				        	 Files.copy(source.toPath(), dest.toPath(),StandardCopyOption.REPLACE_EXISTING);
 				         }
 				         catch(IOException e1)
 				         {
@@ -108,4 +101,25 @@ public class Crops_DataHandler {
 
 		}
 	}
+	
+	public ArrayList<Crop> requestCrops()
+	{
+		Client_Farmer fam = new Client_Farmer();
+		fam.sendAction("request crops");
+		fam.sendExactEmail(ls.getEmail());
+		ArrayList<Crop> list = new ArrayList<Crop>();
+
+		ArrayList<Crop> crops = new ArrayList<Crop>();
+		fam.sendCropList(crops);
+
+		fam.receiveResponse();
+		list = fam.receiveCropData();
+		
+		return list;
+	}
+	
+	
+	
+	
+	
 }

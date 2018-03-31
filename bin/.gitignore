@@ -1,8 +1,6 @@
-/communication/
+/model/
+/view/
 /controller/
 /cropImages/
 /customerImages/
 /farmerImages/
-/model/
-/resources/
-/view/

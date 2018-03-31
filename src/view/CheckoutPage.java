@@ -138,7 +138,8 @@ public class CheckoutPage {
 					
 						 int quantity = list1.get(i).getQuantity() - list.get(count).getQuantity();
 						fam11.sendAction("Update Crop");
-					
+						fam11.sendExactCropName(list1.get(i).getName());
+						fam11.sendExactEmail(list1.get(i).getEmail());
 						/**
 						 * Here stores to the purchases database.
 						 * **/
@@ -154,12 +155,11 @@ public class CheckoutPage {
 							available ="Not In Stock";
 						}
 					
-						
+						Client_Farmer fam111 = new Client_Farmer();
+						fam111.sendAction("Add Crop");
 						Crop crop = new Crop(list1.get(i).getEmail(),list1.get(i).getimagePath(),list1.get(i).getName(),list1.get(i).getWeight(),list1.get(i).getCostPerUnit(),available,quantity);
-						fam11.sendExactCropName(list1.get(i).getName());
-						fam11.sendExactEmail(list1.get(i).getEmail());
-						fam11.sendCrop(crop);
-						fam11.receiveResponse();
+						fam111.sendCrop(crop);
+						fam111.receiveResponse();
 				    	
 						Client_Farmer farmer = new Client_Farmer();
 						farmer.sendAction("Add CustomerPurchase");

@@ -106,10 +106,6 @@ public class CustomerAccount {
 		btnAdd.setBounds(320, 202, 89, 23);
 		frame.getContentPane().add(btnAdd);
 		
-		JLabel lblNewBalance = new JLabel("New Balance: ");
-		lblNewBalance.setBounds(461, 269, 152, 14);
-		frame.getContentPane().add(lblNewBalance);
-		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(CustomerAccount.class.getResource("/resources/addFunds.jpg")));
 		label.setBounds(0, 0, 679, 409);
