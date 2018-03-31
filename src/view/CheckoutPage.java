@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import communication.Client_Customer;
 import communication.Client_Farmer;
@@ -11,13 +14,18 @@ import controller.Client_Controller;
 import model.Basket;
 import model.Crop;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -26,6 +34,8 @@ public class CheckoutPage {
 
 	JFrame frmCheckOut;
 	Client_Controller l = new Client_Controller();
+	 AlterBasket ab = new AlterBasket();
+	 JTable table;
 	/**
 	 * Launch the application.
 	 */
@@ -83,6 +93,94 @@ public class CheckoutPage {
 		pickUpLocationDdl.addItem("Kingston Market");
 		pickUpLocationDdl.addItem("Papine Market");
 		frmCheckOut.getContentPane().add(pickUpLocationDdl);
+		
+		
+		JPanel panel2 = new JPanel();
+		panel2.setBounds(24, 71, 560, 182);
+		panel2.setLayout(null);
+		
+		
+		Client_Customer  fam = new Client_Customer();
+		fam.sendAction("request specific customer basket");
+		ArrayList<Basket> list = new ArrayList<Basket>();
+		fam.sendExactEmail(l.getEmail());
+		ArrayList<Basket> crops = new ArrayList<Basket>();
+	    fam.sendBasketList(crops);
+
+		list = fam.receiveBasketData();
+		
+		
+		/**
+		 * To go in Controller class
+		 * ***/
+		float totalCost=0.0f;
+	
+		for(int i=0; i<list.size(); i++)
+		{
+			totalCost = totalCost + list.get(i).getCost()*list.get(i).getQuantity();
+			
+		}
+		
+
+		
+		DefaultTableModel model  = new DefaultTableModel();
+		table = new JTable(model);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index = table.getSelectedRow();
+		 		TableModel tmodel = table.getModel();
+
+		 		String itemName = tmodel.getValueAt(index, 0).toString();
+		 		String quantity = tmodel.getValueAt(index, 5).toString();
+		 		String cost = tmodel.getValueAt(index, 4).toString();
+		 		String email = tmodel.getValueAt(index, 3).toString();
+		 		String Cemail = tmodel.getValueAt(index, 1).toString();
+		 		String weight = tmodel.getValueAt(index, 2).toString();
+		 		ab.frame.setVisible(true);
+		 		ab.cropName = itemName;
+		 		ab.quantity = Integer.parseInt(quantity);
+		 		ab.cost = Float.parseFloat(cost);
+		 		ab.weight = Float.parseFloat(weight);
+		 		ab.custEmail = Cemail;
+		 		ab.famEmail = email;
+			}
+		});
+		 Object[] columnNames = new Object[6];
+		 
+		 columnNames[0]="Item Name";
+		 columnNames[5] = "Quantity";
+		 columnNames[4] = "cost";
+		 columnNames[3] = "Farmer Email";
+		 columnNames[1] = "Customer Email";
+		 columnNames[2] = "Weight";
+		  
+	
+		 model.setColumnIdentifiers(columnNames);
+		 
+		  Object[] row = new Object[6];
+
+		  for(int i=0; i <list.size(); i++)
+		{
+			  
+			  row[0] = list.get(i).getItemName();
+			  row[5] = list.get(i).getQuantity();
+			  row[4] = list.get(i).getCost();
+			  row[3] = list.get(i).getFarmerEmail();
+			  row[1] = list.get(i).getCustomerEmail();
+			  row[2] = list.get(i).getWeight();
+			  
+			   model.addRow(row); 
+			   
+		}
+		
+
+		  table.setModel(model);
+		  JScrollPane  scrollPane = new JScrollPane(table);
+			scrollPane.setBounds(39, 244, 545, -186);
+			panel2.setLayout(new BorderLayout());
+			panel2.add(scrollPane,BorderLayout.CENTER);
+			frmCheckOut.getContentPane().add(panel2);
 		
 		JButton btnEditOrder = new JButton("Edit Order");
 		btnEditOrder.addActionListener(new ActionListener() {
@@ -214,9 +312,15 @@ public class CheckoutPage {
 		btnConfirmOrder.setBounds(383, 420, 117, 29);
 		frmCheckOut.getContentPane().add(btnConfirmOrder);
 		
+		JLabel lblGrandTotal = new JLabel("Grand Total: $"+Float.toString(totalCost)+"c");
+		lblGrandTotal.setForeground(Color.WHITE);
+		lblGrandTotal.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblGrandTotal.setBounds(24, 264, 143, 27);
+		frmCheckOut.getContentPane().add(lblGrandTotal);
+		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(CheckoutPage.class.getResource("/resources/checkoutpage.jpg")));
-		label.setBounds(0, 0, 610, 455);
+		label.setBounds(10, 0, 610, 455);
 		frmCheckOut.getContentPane().add(label);
 		
 		JMenuBar menuBar = new JMenuBar();

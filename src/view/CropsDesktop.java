@@ -316,6 +316,10 @@ public class CropsDesktop {
 					updatCropInternalFrame.setBounds(798, 69, 375, 462);
 					desktopPane.add(updatCropInternalFrame);
 					updatCropInternalFrame.getContentPane().setLayout(null);
+					JMenuBar menuBar_1 = new JMenuBar();
+					updatCropInternalFrame.setJMenuBar(menuBar_1);
+					
+					
                   try{
 					ArrayList<Crop> list = new ArrayList<Crop>();
 					cropsData = new Crops_DataHandler();
@@ -419,6 +423,114 @@ public class CropsDesktop {
 					updatCropInternalFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 					updatCropInternalFrame.setVisible(true);
+					JButton btnRefresh = new JButton("Refresh");
+					btnRefresh.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+
+							ArrayList<Crop> list = new ArrayList<Crop>();
+							cropsData = new Crops_DataHandler();
+							list = cropsData.requestCrops();
+
+							DefaultTableModel model = new DefaultTableModel();
+
+							table = new JTable(model) {
+								@Override
+								public boolean isCellEditable(int row, int column) // Disables
+																					// cells
+																					// in
+																					// the
+																					// table
+																					// from
+																					// being
+																					// edited.
+								{
+									return false;
+								}
+
+								@SuppressWarnings({ "unchecked", "rawtypes" })
+								@Override
+								public Class getColumnClass(int column) {
+									switch (column) {
+									case 6:
+										return ImageIcon.class;
+									default:
+										return Object.class;
+									}
+								}
+							};
+							table.addMouseListener(new MouseAdapter() {
+
+								@Override
+								public void mouseClicked(MouseEvent e) {
+
+									int index = table.getSelectedRow();
+									TableModel tmodel = table.getModel();
+									ImageIcon image;
+									image = (ImageIcon) tmodel.getValueAt(index, 6);
+									updateCrops.iImage.setIcon(image);
+		                            String iPath = tmodel.getValueAt(index, 6).toString();
+									String name = tmodel.getValueAt(index, 0).toString();
+									String quantity = tmodel.getValueAt(index, 4).toString();
+									String weight = tmodel.getValueAt(index, 1).toString();
+									String cost = tmodel.getValueAt(index, 2).toString();
+									@SuppressWarnings("unused")
+									String ava = tmodel.getValueAt(index, 3).toString();
+									String email = tmodel.getValueAt(index, 5).toString();
+									updateCrops.frmCropUpdate.setVisible(true);
+									updateCrops.textField.setText(name);
+									updateCrops.textField_2.setText(quantity);
+									updateCrops.textField_3.setText(weight);
+									updateCrops.textField_4.setText(cost);
+									updateCrops.email = email;
+									updateCrops.iPath = iPath;
+								}
+							});
+							table.setRowHeight(68);
+
+							Object[] columnNames = new Object[7];
+
+							columnNames[6] = "Image";
+							columnNames[0] = "Name";
+							columnNames[1] = "Weight";
+							columnNames[2] = "Cost";
+							columnNames[3] = "Available";
+							columnNames[4] = "Quantity";
+							columnNames[5] = "Email";
+							model.setColumnIdentifiers(columnNames);
+
+							Object[] row = new Object[7];
+
+							for (int i = 0; i < list.size(); i++) {
+								if (list.get(i).getimagePath() != null) {
+									ImageIcon image = new ImageIcon(new ImageIcon(list.get(i).getimagePath()).getImage()
+											.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+									row[6] = image;
+								} else {
+									row[6] = null;
+								}
+
+								row[0] = list.get(i).getName();
+								row[1] = list.get(i).getWeight();
+								row[2] = list.get(i).getCostPerUnit();
+								row[3] = list.get(i).getAvailable();
+								row[4] = list.get(i).getQuantity();
+								row[5] = list.get(i).getEmail();
+
+								model.addRow(row);
+
+							}
+
+							table.setModel(model);
+							scrollPane = new JScrollPane(table);
+							scrollPane.setBounds(39, 244, 545, -186);
+
+							updatCropInternalFrame.getContentPane().setLayout(new BorderLayout());
+
+							updatCropInternalFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+						}
+					});
+					menuBar_1.add(btnRefresh);
 					flag++;
 
 					updatCropInternalFrame.addInternalFrameListener(new InternalFrameAdapter() {
@@ -450,7 +562,10 @@ public class CropsDesktop {
 		button.setIcon(new ImageIcon(CropsDesktop.class.getResource("/resources/backIcon.png")));
 		button.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		menuBar.add(button);
+		
+		
 	}
+	
 
 	public String returnCropName() {
 
